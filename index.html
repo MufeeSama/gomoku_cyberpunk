@@ -4,345 +4,269 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GOMOKU // 五子棋</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=DejaVu+Sans:wght@400;700&family=DejaVu+Serif:wght@400;700&family=FreeSerif:wght@400;700&family=FreeSans:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Cinzel:wght@400;700&family=Playfair+Display:wght@400;700&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;700&family=Crimson+Text:wght@400;700&family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ===== CYBERPUNK THEME (Default) ===== */
+/* ============================================
+   BASE VARIABLES & RESET
+   ============================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ============================================
+   CYBERPUNK THEME - Neon Tech (Default)
+   ============================================ */
 [data-theme="cyberpunk"] {
   --bg: #0a0a0f;
-  --bg-panel: #0d0d14;
+  --bg-panel: rgba(13, 13, 20, 0.95);
   --primary: #00fff0;
   --secondary: #ff00ff;
   --accent: #fcee0a;
-  --danger: #ff003c;
-  --primary-dim: #00fff066;
-  --secondary-dim: #ff00ff44;
   --text: #e0e0e0;
   --text-dim: #666680;
   --font-display: 'Orbitron', sans-serif;
   --font-mono: 'Share Tech Mono', monospace;
-  --glow-primary: 0 0 10px #00fff0, 0 0 30px #00fff044;
-  --glow-secondary: 0 0 10px #ff00ff, 0 0 30px #ff00ff44;
-  --glow-accent: 0 0 10px #fcee0a, 0 0 30px #fcee0a44;
+  --glow-primary: 0 0 20px rgba(0, 255, 240, 0.5);
   --board-bg: #08080e;
-  --board-grid: rgba(0, 255, 240, 0.2);
-  --board-border: rgba(0, 255, 240, 0.35);
-  --star-point: #00fff0;
-  --black-stone-shadow: #00fff0;
-  --white-stone-shadow: #ff00ff;
-  --black-stone-ring: rgba(0, 255, 240, 0.6);
-  --white-stone-ring: rgba(255, 0, 255, 0.6);
-  --win-line: #fcee0a;
-  --scanline-color: rgba(0, 255, 240, 0.015);
-  --grid-bg-color: rgba(0, 255, 240, 0.03);
+  --board-grid: rgba(0, 255, 240, 0.15);
+  --panel-radius: 0;
+  --panel-border: 1px solid rgba(0, 255, 240, 0.3);
+  --btn-radius: 0;
+  --shadow: 0 0 30px rgba(0, 255, 240, 0.1);
+  --glass: none;
 }
 
-/* ===== OCEAN DEPTHS THEME ===== */
+/* ============================================
+   OCEAN DEPTHS THEME - Deep & Fluid
+   ============================================ */
 [data-theme="ocean-depths"] {
-  --bg: #1a2332;
-  --bg-panel: #232d3f;
-  --primary: #2d8b8b;
-  --secondary: #a8dadc;
-  --accent: #f1faee;
-  --danger: #e63946;
-  --primary-dim: #2d8b8b66;
-  --secondary-dim: #a8dadc44;
-  --text: #f1faee;
-  --text-dim: #8b9cb5;
-  --font-display: 'DejaVu Sans', sans-serif;
-  --font-mono: 'DejaVu Sans', sans-serif;
-  --glow-primary: 0 0 10px #2d8b8b, 0 0 30px #2d8b8b44;
-  --glow-secondary: 0 0 10px #a8dadc, 0 0 30px #a8dadc44;
-  --glow-accent: 0 0 10px #f1faee, 0 0 30px #f1faee44;
-  --board-bg: #141b26;
-  --board-grid: rgba(45, 139, 139, 0.3);
-  --board-border: rgba(45, 139, 139, 0.5);
-  --star-point: #2d8b8b;
-  --black-stone-shadow: #2d8b8b;
-  --white-stone-shadow: #a8dadc;
-  --black-stone-ring: rgba(45, 139, 139, 0.6);
-  --white-stone-ring: rgba(168, 218, 220, 0.6);
-  --win-line: #f1faee;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --bg: linear-gradient(180deg, #0a1628 0%, #1a3a52 50%, #0d2137 100%);
+  --bg-panel: rgba(26, 58, 82, 0.7);
+  --primary: #4dd0e1;
+  --secondary: #80deea;
+  --accent: #b2ebf2;
+  --text: #e0f7fa;
+  --text-dim: #81d4fa;
+  --font-display: 'Cinzel', serif;
+  --font-mono: 'Work Sans', sans-serif;
+  --glow-primary: 0 4px 20px rgba(77, 208, 225, 0.3);
+  --board-bg: #0d2137;
+  --board-grid: rgba(77, 208, 225, 0.2);
+  --panel-radius: 20px;
+  --panel-border: none;
+  --btn-radius: 25px;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass: blur(10px);
 }
 
-/* ===== SUNSET BOULEVARD THEME ===== */
+/* ============================================
+   SUNSET BOULEVARD THEME - Warm Gradient
+   ============================================ */
 [data-theme="sunset-boulevard"] {
-  --bg: #264653;
-  --bg-panel: #2d525f;
-  --primary: #e76f51;
-  --secondary: #f4a261;
-  --accent: #e9c46a;
-  --danger: #e63946;
-  --primary-dim: #e76f5166;
-  --secondary-dim: #f4a26144;
-  --text: #f1faee;
-  --text-dim: #b8c5c9;
-  --font-display: 'DejaVu Serif', serif;
-  --font-mono: 'DejaVu Sans', sans-serif;
-  --glow-primary: 0 0 10px #e76f51, 0 0 30px #e76f5144;
-  --glow-secondary: 0 0 10px #f4a261, 0 0 30px #f4a26144;
-  --glow-accent: 0 0 10px #e9c46a, 0 0 30px #e9c46a44;
-  --board-bg: #1f3a45;
-  --board-grid: rgba(231, 111, 81, 0.3);
-  --board-border: rgba(231, 111, 81, 0.5);
-  --star-point: #e76f51;
-  --black-stone-shadow: #e76f51;
-  --white-stone-shadow: #f4a261;
-  --black-stone-ring: rgba(231, 111, 81, 0.6);
-  --white-stone-ring: rgba(244, 162, 97, 0.6);
-  --win-line: #e9c46a;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --bg: linear-gradient(135deg, #2d1b2e 0%, #1a1a2e 50%, #16213e 100%);
+  --bg-panel: rgba(45, 27, 46, 0.75);
+  --primary: #ff6b6b;
+  --secondary: #feca57;
+  --accent: #ff9ff3;
+  --text: #ffeaa7;
+  --text-dim: #fab1a0;
+  --font-display: 'Playfair Display', serif;
+  --font-mono: 'Crimson Text', serif;
+  --glow-primary: 0 4px 20px rgba(255, 107, 107, 0.3);
+  --board-bg: #1a1a2e;
+  --board-grid: rgba(255, 107, 107, 0.15);
+  --panel-radius: 16px;
+  --panel-border: none;
+  --btn-radius: 30px;
+  --shadow: 0 10px 40px rgba(255, 107, 107, 0.2);
+  --glass: blur(12px);
 }
 
-/* ===== FOREST CANOPY THEME ===== */
+/* ============================================
+   FOREST CANOPY THEME - Organic Nature
+   ============================================ */
 [data-theme="forest-canopy"] {
-  --bg: #2d4a2b;
-  --bg-panel: #3a5c38;
-  --primary: #7d8471;
-  --secondary: #a4ac86;
-  --accent: #faf9f6;
-  --danger: #c1666b;
-  --primary-dim: #7d847166;
-  --secondary-dim: #a4ac8644;
-  --text: #faf9f6;
-  --text-dim: #b8b5a8;
-  --font-display: 'FreeSerif', serif;
-  --font-mono: 'FreeSans', sans-serif;
-  --glow-primary: 0 0 10px #7d8471, 0 0 30px #7d847144;
-  --glow-secondary: 0 0 10px #a4ac86, 0 0 30px #a4ac8644;
-  --glow-accent: 0 0 10px #faf9f6, 0 0 30px #faf9f644;
-  --board-bg: #243d22;
-  --board-grid: rgba(125, 132, 113, 0.3);
-  --board-border: rgba(125, 132, 113, 0.5);
-  --star-point: #7d8471;
-  --black-stone-shadow: #7d8471;
-  --white-stone-shadow: #a4ac86;
-  --black-stone-ring: rgba(125, 132, 113, 0.6);
-  --white-stone-ring: rgba(164, 172, 134, 0.6);
-  --win-line: #faf9f6;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --bg: linear-gradient(160deg, #1a2f1a 0%, #2d4a2b 50%, #1e3d1e 100%);
+  --bg-panel: rgba(45, 74, 43, 0.8);
+  --primary: #a5d6a7;
+  --secondary: #81c784;
+  --accent: #c8e6c9;
+  --text: #e8f5e9;
+  --text-dim: #a5d6a7;
+  --font-display: 'Noto Serif SC', serif;
+  --font-mono: 'Noto Sans SC', sans-serif;
+  --glow-primary: 0 4px 15px rgba(129, 199, 132, 0.25);
+  --board-bg: #1b361b;
+  --board-grid: rgba(165, 214, 167, 0.2);
+  --panel-radius: 12px;
+  --panel-border: none;
+  --btn-radius: 8px;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  --glass: blur(8px);
 }
 
-/* ===== MODERN MINIMALIST THEME ===== */
+/* ============================================
+   MODERN MINIMALIST THEME - Clean White
+   ============================================ */
 [data-theme="modern-minimalist"] {
-  --bg: #36454f;
-  --bg-panel: #4a5a65;
-  --primary: #708090;
-  --secondary: #d3d3d3;
-  --accent: #ffffff;
-  --danger: #ff6b6b;
-  --primary-dim: #70809066;
-  --secondary-dim: #d3d3d344;
-  --text: #ffffff;
-  --text-dim: #a0a8b0;
-  --font-display: 'DejaVu Sans', sans-serif;
-  --font-mono: 'DejaVu Sans', sans-serif;
-  --glow-primary: 0 0 10px #708090, 0 0 30px #70809044;
-  --glow-secondary: 0 0 10px #d3d3d3, 0 0 30px #d3d3d344;
-  --glow-accent: 0 0 10px #ffffff, 0 0 30px #ffffff44;
-  --board-bg: #2c3840;
-  --board-grid: rgba(112, 128, 144, 0.3);
-  --board-border: rgba(112, 128, 144, 0.5);
-  --star-point: #708090;
-  --black-stone-shadow: #708090;
-  --white-stone-shadow: #d3d3d3;
-  --black-stone-ring: rgba(112, 128, 144, 0.6);
-  --white-stone-ring: rgba(211, 211, 211, 0.6);
-  --win-line: #ffffff;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --bg: #f8f9fa;
+  --bg-panel: #ffffff;
+  --primary: #212529;
+  --secondary: #495057;
+  --accent: #000000;
+  --text: #212529;
+  --text-dim: #6c757d;
+  --font-display: 'Space Mono', monospace;
+  --font-mono: 'Work Sans', sans-serif;
+  --glow-primary: none;
+  --board-bg: #ffffff;
+  --board-grid: rgba(33, 37, 41, 0.12);
+  --panel-radius: 8px;
+  --panel-border: 1px solid #dee2e6;
+  --btn-radius: 6px;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --glass: none;
 }
 
-/* ===== GOLDEN HOUR THEME ===== */
+/* ============================================
+   GOLDEN HOUR THEME - Luxury Gold
+   ============================================ */
 [data-theme="golden-hour"] {
-  --bg: #4a403a;
-  --bg-panel: #5c5048;
-  --primary: #f4a900;
-  --secondary: #c1666b;
-  --accent: #d4b896;
-  --danger: #e63946;
-  --primary-dim: #f4a90066;
-  --secondary-dim: #c1666b44;
-  --text: #f5f0eb;
-  --text-dim: #b8a898;
-  --font-display: 'FreeSans', sans-serif;
-  --font-mono: 'FreeSans', sans-serif;
-  --glow-primary: 0 0 10px #f4a900, 0 0 30px #f4a90044;
-  --glow-secondary: 0 0 10px #c1666b, 0 0 30px #c1666b44;
-  --glow-accent: 0 0 10px #d4b896, 0 0 30px #d4b89644;
-  --board-bg: #3d3530;
-  --board-grid: rgba(244, 169, 0, 0.3);
-  --board-border: rgba(244, 169, 0, 0.5);
-  --star-point: #f4a900;
-  --black-stone-shadow: #f4a900;
-  --white-stone-shadow: #c1666b;
-  --black-stone-ring: rgba(244, 169, 0, 0.6);
-  --white-stone-ring: rgba(193, 102, 107, 0.6);
-  --win-line: #d4b896;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --bg: linear-gradient(145deg, #2c2416 0%, #3d3020 50%, #2a2015 100%);
+  --bg-panel: rgba(61, 48, 32, 0.85);
+  --primary: #d4af37;
+  --secondary: #c9a227;
+  --accent: #f4e4c1;
+  --text: #f5f0e1;
+  --text-dim: #c9b896;
+  --font-display: 'Cinzel', serif;
+  --font-mono: 'Crimson Text', serif;
+  --glow-primary: 0 4px 20px rgba(212, 175, 55, 0.25);
+  --board-bg: #2a2015;
+  --board-grid: rgba(212, 175, 55, 0.18);
+  --panel-radius: 4px;
+  --panel-border: 1px solid rgba(212, 175, 55, 0.3);
+  --btn-radius: 0;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --glass: blur(10px);
 }
 
-/* ===== ARCTIC FROST THEME ===== */
+/* ============================================
+   ARCTIC FROST THEME - Clean Blue
+   ============================================ */
 [data-theme="arctic-frost"] {
-  --bg: #d4e4f7;
-  --bg-panel: #e8f0f9;
-  --primary: #4a6fa5;
-  --secondary: #c0c0c0;
-  --accent: #2c5282;
-  --danger: #e53e3e;
-  --primary-dim: #4a6fa566;
-  --secondary-dim: #c0c0c044;
-  --text: #2d3748;
-  --text-dim: #718096;
-  --font-display: 'DejaVu Sans', sans-serif;
-  --font-mono: 'DejaVu Sans', sans-serif;
-  --glow-primary: 0 0 10px #4a6fa5, 0 0 30px #4a6fa544;
-  --glow-secondary: 0 0 10px #c0c0c0, 0 0 30px #c0c0c044;
-  --glow-accent: 0 0 10px #2c5282, 0 0 30px #2c528244;
-  --board-bg: #c5d8ed;
-  --board-grid: rgba(74, 111, 165, 0.3);
-  --board-border: rgba(74, 111, 165, 0.5);
-  --star-point: #4a6fa5;
-  --black-stone-shadow: #4a6fa5;
-  --white-stone-shadow: #c0c0c0;
-  --black-stone-ring: rgba(74, 111, 165, 0.6);
-  --white-stone-ring: rgba(192, 192, 192, 0.6);
-  --win-line: #2c5282;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --bg: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 50%, #e1f5fe 100%);
+  --bg-panel: rgba(255, 255, 255, 0.9);
+  --primary: #1976d2;
+  --secondary: #42a5f5;
+  --accent: #0d47a1;
+  --text: #1565c0;
+  --text-dim: #64b5f6;
+  --font-display: 'Space Mono', monospace;
+  --font-mono: 'Work Sans', sans-serif;
+  --glow-primary: 0 4px 15px rgba(25, 118, 210, 0.2);
+  --board-bg: #ffffff;
+  --board-grid: rgba(25, 118, 210, 0.15);
+  --panel-radius: 24px;
+  --panel-border: none;
+  --btn-radius: 50px;
+  --shadow: 0 4px 20px rgba(25, 118, 210, 0.15);
+  --glass: blur(10px);
 }
 
-/* ===== DESERT ROSE THEME ===== */
+/* ============================================
+   DESERT ROSE THEME - Soft Pink
+   ============================================ */
 [data-theme="desert-rose"] {
-  --bg: #5d2e46;
-  --bg-panel: #6d3854;
-  --primary: #d4a5a5;
-  --secondary: #b87d6d;
-  --accent: #e8d5c4;
-  --danger: #c53030;
-  --primary-dim: #d4a5a566;
-  --secondary-dim: #b87d6d44;
-  --text: #f7f0eb;
-  --text-dim: #c4a8a8;
-  --font-display: 'FreeSans', sans-serif;
-  --font-mono: 'FreeSans', sans-serif;
-  --glow-primary: 0 0 10px #d4a5a5, 0 0 30px #d4a5a544;
-  --glow-secondary: 0 0 10px #b87d6d, 0 0 30px #b87d6d44;
-  --glow-accent: 0 0 10px #e8d5c4, 0 0 30px #e8d5c444;
-  --board-bg: #4a2538;
-  --board-grid: rgba(212, 165, 165, 0.3);
-  --board-border: rgba(212, 165, 165, 0.5);
-  --star-point: #d4a5a5;
-  --black-stone-shadow: #d4a5a5;
-  --white-stone-shadow: #b87d6d;
-  --black-stone-ring: rgba(212, 165, 165, 0.6);
-  --white-stone-ring: rgba(184, 125, 109, 0.6);
-  --win-line: #e8d5c4;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --bg: linear-gradient(135deg, #2d1f24 0%, #3d282e 50%, #2d1f24 100%);
+  --bg-panel: rgba(61, 40, 46, 0.8);
+  --primary: #e8b4b8;
+  --secondary: #d4a5a5;
+  --accent: #f5e6e8;
+  --text: #fce4ec;
+  --text-dim: #f8bbd9;
+  --font-display: 'Playfair Display', serif;
+  --font-mono: 'Crimson Text', serif;
+  --glow-primary: 0 4px 15px rgba(232, 180, 184, 0.2);
+  --board-bg: #2d1f24;
+  --board-grid: rgba(232, 180, 184, 0.15);
+  --panel-radius: 16px;
+  --panel-border: none;
+  --btn-radius: 20px;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  --glass: blur(10px);
 }
 
-/* ===== TECH INNOVATION THEME ===== */
+/* ============================================
+   TECH INNOVATION THEME - Dark Modern
+   ============================================ */
 [data-theme="tech-innovation"] {
-  --bg: #1e1e1e;
-  --bg-panel: #2a2a2a;
-  --primary: #0066ff;
-  --secondary: #00ffff;
+  --bg: #161b22;
+  --bg-panel: rgba(33, 38, 45, 0.95);
+  --primary: #58a6ff;
+  --secondary: #79c0ff;
   --accent: #ffffff;
-  --danger: #ff4444;
-  --primary-dim: #0066ff66;
-  --secondary-dim: #00ffff44;
-  --text: #ffffff;
-  --text-dim: #888888;
-  --font-display: 'DejaVu Sans', sans-serif;
-  --font-mono: 'DejaVu Sans', sans-serif;
-  --glow-primary: 0 0 10px #0066ff, 0 0 30px #0066ff44;
-  --glow-secondary: 0 0 10px #00ffff, 0 0 30px #00ffff44;
-  --glow-accent: 0 0 10px #ffffff, 0 0 30px #ffffff44;
-  --board-bg: #181818;
-  --board-grid: rgba(0, 102, 255, 0.3);
-  --board-border: rgba(0, 102, 255, 0.5);
-  --star-point: #0066ff;
-  --black-stone-shadow: #0066ff;
-  --white-stone-shadow: #00ffff;
-  --black-stone-ring: rgba(0, 102, 255, 0.6);
-  --white-stone-ring: rgba(0, 255, 255, 0.6);
-  --win-line: #ffffff;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --text: #c9d1d9;
+  --text-dim: #8b949e;
+  --font-display: 'Space Mono', monospace;
+  --font-mono: 'Space Mono', monospace;
+  --glow-primary: 0 0 15px rgba(88, 166, 255, 0.3);
+  --board-bg: #1c2128;
+  --board-grid: rgba(88, 166, 255, 0.25);
+  --panel-radius: 6px;
+  --panel-border: 1px solid #30363d;
+  --btn-radius: 6px;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --glass: none;
 }
 
-/* ===== BOTANICAL GARDEN THEME ===== */
+/* ============================================
+   BOTANICAL GARDEN THEME - Fresh Green
+   ============================================ */
 [data-theme="botanical-garden"] {
-  --bg: #4a7c59;
-  --bg-panel: #5a9068;
-  --primary: #f9a620;
-  --secondary: #b7472a;
-  --accent: #f5f3ed;
-  --danger: #e53e3e;
-  --primary-dim: #f9a62066;
-  --secondary-dim: #b7472a44;
-  --text: #f5f3ed;
-  --text-dim: #c9d4cc;
-  --font-display: 'DejaVu Serif', serif;
-  --font-mono: 'DejaVu Sans', sans-serif;
-  --glow-primary: 0 0 10px #f9a620, 0 0 30px #f9a62044;
-  --glow-secondary: 0 0 10px #b7472a, 0 0 30px #b7472a44;
-  --glow-accent: 0 0 10px #f5f3ed, 0 0 30px #f5f3ed44;
-  --board-bg: #3d6648;
-  --board-grid: rgba(249, 166, 32, 0.3);
-  --board-border: rgba(249, 166, 32, 0.5);
-  --star-point: #f9a620;
-  --black-stone-shadow: #f9a620;
-  --white-stone-shadow: #b7472a;
-  --black-stone-ring: rgba(249, 166, 32, 0.6);
-  --white-stone-ring: rgba(183, 71, 42, 0.6);
-  --win-line: #f5f3ed;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --bg: linear-gradient(145deg, #1b5e20 0%, #2e7d32 50%, #1b5e20 100%);
+  --bg-panel: rgba(46, 125, 50, 0.85);
+  --primary: #ffeb3b;
+  --secondary: #ff9800;
+  --accent: #fffde7;
+  --text: #f1f8e9;
+  --text-dim: #c5e1a5;
+  --font-display: 'Noto Serif SC', serif;
+  --font-mono: 'Noto Sans SC', sans-serif;
+  --glow-primary: 0 4px 15px rgba(255, 235, 59, 0.25);
+  --board-bg: #1b5e20;
+  --board-grid: rgba(255, 235, 59, 0.15);
+  --panel-radius: 20px;
+  --panel-border: none;
+  --btn-radius: 25px;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  --glass: blur(8px);
 }
 
-/* ===== MIDNIGHT GALAXY THEME ===== */
+/* ============================================
+   MIDNIGHT GALAXY THEME - Cosmic Purple
+   ============================================ */
 [data-theme="midnight-galaxy"] {
-  --bg: #2b1e3e;
-  --bg-panel: #3a2a52;
-  --primary: #4a4e8f;
-  --secondary: #a490c2;
-  --accent: #e6e6fa;
-  --danger: #ff6b6b;
-  --primary-dim: #4a4e8f66;
-  --secondary-dim: #a490c244;
-  --text: #e6e6fa;
-  --text-dim: #9a8bb5;
-  --font-display: 'FreeSans', sans-serif;
-  --font-mono: 'FreeSans', sans-serif;
-  --glow-primary: 0 0 10px #4a4e8f, 0 0 30px #4a4e8f44;
-  --glow-secondary: 0 0 10px #a490c2, 0 0 30px #a490c244;
-  --glow-accent: 0 0 10px #e6e6fa, 0 0 30px #e6e6fa44;
-  --board-bg: #221830;
-  --board-grid: rgba(74, 78, 143, 0.3);
-  --board-border: rgba(74, 78, 143, 0.5);
-  --star-point: #4a4e8f;
-  --black-stone-shadow: #4a4e8f;
-  --white-stone-shadow: #a490c2;
-  --black-stone-ring: rgba(74, 78, 143, 0.6);
-  --white-stone-ring: rgba(164, 144, 194, 0.6);
-  --win-line: #e6e6fa;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --bg: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  --bg-panel: rgba(48, 43, 99, 0.75);
+  --primary: #b39ddb;
+  --secondary: #9575cd;
+  --accent: #e1bee7;
+  --text: #ede7f6;
+  --text-dim: #b39ddb;
+  --font-display: 'Cinzel', serif;
+  --font-mono: 'Space Mono', monospace;
+  --glow-primary: 0 4px 20px rgba(179, 157, 219, 0.3);
+  --board-bg: #1a1a2e;
+  --board-grid: rgba(179, 157, 219, 0.12);
+  --panel-radius: 16px;
+  --panel-border: none;
+  --btn-radius: 50px;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --glass: blur(12px);
 }
 
-:root {
-  --clip: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
-  --clip-sm: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
+/* ============================================
+   BASE STYLES
+   ============================================ */
 body {
   font-family: var(--font-mono);
   background: var(--bg);
@@ -354,95 +278,153 @@ body {
   user-select: none;
   overflow-x: hidden;
   position: relative;
-  transition: background 0.3s ease;
+  transition: all 0.5s ease;
 }
 
-/* === Scanline overlay - only for cyberpunk theme === */
+/* Background decorations - subtle and non-intrusive */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    var(--scanline-color) 2px,
-    var(--scanline-color) 4px
-  );
-  pointer-events: none;
-  z-index: 999;
-}
-
-/* === Grid background === */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    linear-gradient(var(--grid-bg-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-bg-color) 1px, transparent 1px);
-  background-size: 40px 40px;
   pointer-events: none;
   z-index: 0;
-  animation: gridScroll 20s linear infinite;
+  opacity: 0.4;
 }
 
-@keyframes gridScroll {
-  0% { transform: perspective(500px) rotateX(0deg); }
-  100% { transform: perspective(500px) rotateX(0deg) translateY(40px); }
+/* Cyberpunk grid - only for cyberpunk */
+[data-theme="cyberpunk"]::before {
+  background: 
+    linear-gradient(rgba(0, 255, 240, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 240, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
 }
 
-/* === Cyber panel base === */
-.cyber-panel {
-  background: var(--bg-panel);
-  border: 1px solid var(--primary-dim);
-  clip-path: var(--clip);
-  position: relative;
-  transition: background 0.3s ease, border-color 0.3s ease;
+@keyframes gridMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(50px); }
 }
 
-.cyber-panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  clip-path: var(--clip);
-  background: linear-gradient(135deg, var(--primary-dim) 0%, transparent 50%, var(--secondary-dim) 100%);
-  pointer-events: none;
+/* Ocean bubbles */
+[data-theme="ocean-depths"]::before {
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(77, 208, 225, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(128, 222, 234, 0.06) 0%, transparent 40%);
+  animation: float 8s ease-in-out infinite;
 }
 
-/* === Container === */
+/* Sunset glow */
+[data-theme="sunset-boulevard"]::before {
+  background: 
+    radial-gradient(ellipse at 100% 0%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 0% 100%, rgba(254, 202, 87, 0.08) 0%, transparent 50%);
+}
+
+/* Forest leaves */
+[data-theme="forest-canopy"]::before {
+  background: 
+    radial-gradient(circle at 10% 90%, rgba(129, 199, 132, 0.08) 0%, transparent 35%),
+    radial-gradient(circle at 90% 10%, rgba(165, 214, 167, 0.06) 0%, transparent 35%);
+}
+
+/* Golden shimmer */
+[data-theme="golden-hour"]::before {
+  background: 
+    linear-gradient(45deg, transparent 30%, rgba(212, 175, 55, 0.03) 50%, transparent 70%);
+  animation: shimmer 6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.3; transform: translateX(-100%); }
+  50% { opacity: 0.6; transform: translateX(100%); }
+}
+
+/* Arctic snowflakes */
+[data-theme="arctic-frost"]::before {
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 3%),
+    radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.2) 0%, transparent 2%),
+    radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.25) 0%, transparent 2.5%);
+}
+
+/* Desert sand */
+[data-theme="desert-rose"]::before {
+  background: 
+    radial-gradient(ellipse at 50% 100%, rgba(232, 180, 184, 0.08) 0%, transparent 50%);
+}
+
+/* Botanical flowers */
+[data-theme="botanical-garden"]::before {
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 235, 59, 0.06) 0%, transparent 30%),
+    radial-gradient(circle at 80% 70%, rgba(255, 152, 0, 0.05) 0%, transparent 30%);
+}
+
+/* Galaxy stars */
+[data-theme="midnight-galaxy"]::before {
+  background: 
+    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.3), transparent),
+    radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1px 1px at 300px 80px, rgba(255,255,255,0.3), transparent);
+  background-size: 400px 200px;
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ============================================
+   CONTAINER & LAYOUT
+   ============================================ */
 .container {
   position: relative;
   z-index: 1;
   display: flex;
-  gap: 28px;
+  gap: 32px;
   align-items: flex-start;
   padding: 32px;
   max-width: 1100px;
   width: 100%;
 }
 
-/* === Board area === */
+/* ============================================
+   PANEL STYLES
+   ============================================ */
+.game-panel {
+  background: var(--bg-panel);
+  border: var(--panel-border);
+  border-radius: var(--panel-radius);
+  backdrop-filter: var(--glass);
+  -webkit-backdrop-filter: var(--glass);
+  box-shadow: var(--shadow);
+  position: relative;
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+
+/* ============================================
+   BOARD AREA - Clean and unobstructed
+   ============================================ */
 .board-area {
   flex-shrink: 0;
-  padding: 20px;
+  padding: 24px;
 }
 
 .board-wrapper {
   position: relative;
-  clip-path: var(--clip-sm);
+  border-radius: var(--panel-radius);
   overflow: hidden;
-  border: 1px solid var(--primary-dim);
-  transition: border-color 0.3s ease;
-}
-
-.board-wrapper::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 1px solid var(--secondary-dim);
-  clip-path: var(--clip-sm);
-  pointer-events: none;
+  box-shadow: var(--shadow);
+  transition: all 0.4s ease;
+  background: var(--board-bg);
 }
 
 canvas {
@@ -454,37 +436,45 @@ canvas {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* ============================================
+   STATUS BAR
+   ============================================ */
 .status-bar {
   text-align: center;
   margin-top: 16px;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--primary);
   min-height: 22px;
   transition: all .3s;
   letter-spacing: 2px;
   text-transform: uppercase;
-  text-shadow: var(--glow-primary);
 }
 
 .status-bar.win {
   color: var(--accent);
-  text-shadow: var(--glow-accent);
-  animation: glitchText 0.3s ease 3;
+  font-weight: 700;
 }
 
-@keyframes glitchText {
-  0%, 100% { transform: translate(0); }
-  20% { transform: translate(-2px, 1px); filter: hue-rotate(90deg); }
-  40% { transform: translate(2px, -1px); filter: hue-rotate(-90deg); }
-  60% { transform: translate(-1px, -1px); }
-  80% { transform: translate(1px, 1px); filter: hue-rotate(45deg); }
+[data-theme="cyberpunk"] .status-bar {
+  text-shadow: var(--glow-primary);
 }
 
-/* === Side panel === */
+[data-theme="cyberpunk"] .status-bar.win {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ============================================
+   SIDE PANEL
+   ============================================ */
 .side-panel {
   padding: 28px 24px;
-  min-width: 240px;
+  min-width: 260px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -492,41 +482,170 @@ canvas {
 
 .side-panel h2 {
   font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 900;
+  font-size: 24px;
+  font-weight: 700;
   text-align: center;
   color: var(--primary);
-  letter-spacing: 6px;
+  letter-spacing: 4px;
   padding-bottom: 16px;
   margin-bottom: 4px;
   position: relative;
-  text-shadow: var(--glow-primary);
-  text-transform: uppercase;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
+/* Title decorations */
 .side-panel h2::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 80%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  border-radius: 1px;
 }
 
-/* === Score row === */
+/* Cyberpunk title */
+[data-theme="cyberpunk"] .side-panel h2 {
+  text-shadow: var(--glow-primary);
+}
+
+/* Ocean title */
+[data-theme="ocean-depths"] .side-panel h2 {
+  letter-spacing: 3px;
+}
+
+[data-theme="ocean-depths"] .side-panel h2::after {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), var(--primary), transparent);
+}
+
+/* Sunset gradient title */
+[data-theme="sunset-boulevard"] .side-panel h2 {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Forest organic */
+[data-theme="forest-canopy"] .side-panel h2 {
+  letter-spacing: 2px;
+}
+
+/* Minimalist */
+[data-theme="modern-minimalist"] .side-panel h2 {
+  letter-spacing: 6px;
+  font-weight: 700;
+}
+
+[data-theme="modern-minimalist"] .side-panel h2::after {
+  width: 40%;
+  background: var(--primary);
+}
+
+/* Golden elegant */
+[data-theme="golden-hour"] .side-panel h2 {
+  letter-spacing: 2px;
+}
+
+[data-theme="golden-hour"] .side-panel h2::after {
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), var(--primary), transparent);
+  height: 1px;
+}
+
+/* Arctic clean */
+[data-theme="arctic-frost"] .side-panel h2 {
+  letter-spacing: 4px;
+}
+
+/* Desert romantic */
+[data-theme="desert-rose"] .side-panel h2 {
+  font-style: italic;
+  letter-spacing: 2px;
+}
+
+/* Tech code style */
+[data-theme="tech-innovation"] .side-panel h2::before {
+  content: '<';
+  margin-right: 8px;
+  color: var(--secondary);
+}
+
+[data-theme="tech-innovation"] .side-panel h2::after {
+  display: none;
+}
+
+[data-theme="tech-innovation"] .side-panel h2 {
+  font-family: 'Space Mono', monospace;
+}
+
+[data-theme="tech-innovation"] .side-panel h2::after {
+  content: '/>';
+  display: inline;
+  position: static;
+  transform: none;
+  margin-left: 8px;
+  background: none;
+  color: var(--secondary);
+}
+
+/* Botanical */
+[data-theme="botanical-garden"] .side-panel h2::before {
+  content: '🌿';
+  margin-right: 8px;
+}
+
+[data-theme="botanical-garden"] .side-panel h2::after {
+  display: none;
+}
+
+[data-theme="botanical-garden"] .side-panel h2::after {
+  content: '🌿';
+  display: inline;
+  position: static;
+  transform: none;
+  margin-left: 8px;
+  background: none;
+}
+
+/* Galaxy animated */
+[data-theme="midnight-galaxy"] .side-panel h2 {
+  background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary), var(--primary));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient 3s linear infinite;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ============================================
+   SCORE ROW
+   ============================================ */
 .score-row {
   display: flex;
   justify-content: space-around;
   align-items: center;
   gap: 8px;
-  padding: 14px 10px;
-  clip-path: var(--clip-sm);
-  background: var(--primary-dim);
-  border: 1px solid var(--primary-dim);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  padding: 16px 12px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: var(--panel-radius);
+  transition: all 0.3s ease;
+}
+
+[data-theme="modern-minimalist"] .score-row {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+[data-theme="arctic-frost"] .score-row {
+  background: rgba(25, 118, 210, 0.08);
 }
 
 .score-item {
@@ -540,16 +659,19 @@ canvas {
   font-weight: 700;
   color: var(--primary);
   line-height: 1.2;
+  transition: all 0.3s ease;
+}
+
+[data-theme="cyberpunk"] .score-item .count {
   text-shadow: var(--glow-primary);
-  transition: color 0.3s ease;
 }
 
 .score-item .label {
   font-size: 10px;
   color: var(--text-dim);
   margin-top: 4px;
-  font-weight: 400;
-  letter-spacing: 3px;
+  font-weight: 500;
+  letter-spacing: 2px;
   text-transform: uppercase;
   transition: color 0.3s ease;
 }
@@ -557,62 +679,72 @@ canvas {
 .score-divider {
   width: 1px;
   height: 36px;
-  background: linear-gradient(to bottom, transparent, var(--primary-dim), transparent);
+  background: linear-gradient(to bottom, transparent, var(--primary), transparent);
+  opacity: 0.3;
 }
 
-/* === Difficulty select === */
-.difficulty-group label {
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+.control-group {
+  position: relative;
+}
+
+.control-group label {
   display: block;
   font-size: 10px;
   color: var(--text-dim);
   margin-bottom: 6px;
-  font-weight: 400;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 2px;
   transition: color 0.3s ease;
 }
 
-.difficulty-group select {
+.control-group select {
   width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--primary-dim);
-  clip-path: var(--clip-sm);
+  padding: 12px 16px;
+  border: var(--panel-border);
+  border-radius: var(--btn-radius);
   font-size: 13px;
   font-family: var(--font-mono);
-  background: var(--primary-dim);
+  background: rgba(0, 0, 0, 0.2);
   color: var(--primary);
   cursor: pointer;
   outline: none;
   transition: all .2s ease;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2300fff0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
 }
 
-.difficulty-group select option {
+[data-theme="modern-minimalist"] .control-group select,
+[data-theme="arctic-frost"] .control-group select {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #dee2e6;
+}
+
+.control-group select option {
   background: var(--bg-panel);
   color: var(--primary);
 }
 
-.difficulty-group select:focus {
-  border-color: var(--primary);
-  box-shadow: var(--glow-primary);
+.control-group select:focus {
+  box-shadow: 0 0 0 2px var(--primary);
 }
 
-.difficulty-group select:hover {
-  background: var(--primary-dim);
-}
-
-/* === Buttons === */
+/* ============================================
+   BUTTONS
+   ============================================ */
 .btn {
   width: 100%;
-  padding: 11px 16px;
-  border: 1px solid var(--primary-dim);
-  clip-path: var(--clip-sm);
-  background: transparent;
+  padding: 12px 18px;
+  border: var(--panel-border);
+  border-radius: var(--btn-radius);
+  background: rgba(0, 0, 0, 0.2);
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 500;
   font-family: var(--font-mono);
   cursor: pointer;
   color: var(--text);
@@ -626,45 +758,31 @@ canvas {
   text-transform: uppercase;
 }
 
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
-  opacity: 0;
-  transition: opacity .2s;
+[data-theme="modern-minimalist"] .btn,
+[data-theme="arctic-frost"] .btn {
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .btn:hover {
-  background: var(--primary-dim);
-  border-color: var(--primary);
-  color: var(--primary);
-  text-shadow: 0 0 8px var(--primary-dim);
+  background: var(--primary);
+  color: var(--bg-panel);
+  transform: translateY(-2px);
+  box-shadow: var(--glow-primary);
 }
 
-.btn:hover::before { opacity: 1; }
-
 .btn:active {
-  background: var(--primary-dim);
-  transform: scale(0.98);
+  transform: translateY(0);
 }
 
 .btn.primary {
-  border-color: var(--secondary-dim);
-  color: var(--secondary);
+  background: var(--secondary);
+  color: var(--bg-panel);
+  border-color: var(--secondary);
 }
 
 .btn.primary:hover {
-  background: var(--secondary-dim);
-  border-color: var(--secondary);
-  text-shadow: 0 0 8px var(--secondary-dim);
-}
-
-.btn.primary::before {
-  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  background: var(--primary);
+  border-color: var(--primary);
 }
 
 .btn svg {
@@ -676,12 +794,49 @@ canvas {
 .btn-row { display: flex; gap: 10px; }
 .btn-row .btn { flex: 1; }
 
-/* === Overlay === */
+/* ============================================
+   THEME SELECTOR
+   ============================================ */
+.theme-selector {
+  position: relative;
+}
+
+.theme-selector select {
+  width: 100%;
+  padding: 12px 16px;
+  border: var(--panel-border);
+  border-radius: var(--btn-radius);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--primary);
+  cursor: pointer;
+  outline: none;
+  transition: all .2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+[data-theme="modern-minimalist"] .theme-selector select,
+[data-theme="arctic-frost"] .theme-selector select {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.theme-selector select option {
+  background: var(--bg-panel);
+  color: var(--primary);
+}
+
+/* ============================================
+   OVERLAY & HELP CARD
+   ============================================ */
 .overlay {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.8);
   z-index: 100;
   align-items: center;
   justify-content: center;
@@ -695,11 +850,10 @@ canvas {
   to { opacity: 1; }
 }
 
-/* === Help card === */
 .help-card {
   background: var(--bg-panel);
-  border: 1px solid var(--primary);
-  clip-path: var(--clip);
+  border: var(--panel-border);
+  border-radius: var(--panel-radius);
   padding: 32px;
   max-width: 480px;
   width: 90%;
@@ -707,16 +861,10 @@ canvas {
   overflow-y: auto;
   animation: cardSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
-  transition: background 0.3s ease, border-color 0.3s ease;
-}
-
-.help-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  clip-path: var(--clip);
-  background: linear-gradient(135deg, var(--primary-dim) 0%, transparent 50%, var(--secondary-dim) 100%);
-  pointer-events: none;
+  backdrop-filter: var(--glass);
+  -webkit-backdrop-filter: var(--glass);
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
 }
 
 @keyframes cardSlideUp {
@@ -730,11 +878,10 @@ canvas {
   margin-bottom: 20px;
   color: var(--primary);
   padding-bottom: 14px;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   position: relative;
-  text-shadow: var(--glow-primary);
   text-transform: uppercase;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .help-card h3::after {
@@ -745,16 +892,16 @@ canvas {
   width: 60px;
   height: 2px;
   background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 1px;
 }
 
 .help-card h4 {
   font-size: 12px;
   margin: 18px 0 10px;
   color: var(--secondary);
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
-  text-shadow: 0 0 8px var(--secondary-dim);
   transition: color 0.3s ease;
 }
 
@@ -763,7 +910,7 @@ canvas {
   line-height: 1.8;
   color: var(--text);
   margin-bottom: 4px;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .help-card ul { padding-left: 20px; margin-bottom: 8px; }
@@ -774,9 +921,9 @@ canvas {
   justify-content: center;
   gap: 8px;
   margin: 24px auto 0;
-  padding: 10px 32px;
-  border: 1px solid var(--primary);
-  clip-path: var(--clip-sm);
+  padding: 12px 32px;
+  border: var(--panel-border);
+  border-radius: var(--btn-radius);
   background: transparent;
   font-size: 13px;
   cursor: pointer;
@@ -788,8 +935,8 @@ canvas {
 }
 
 .help-card .close-btn:hover {
-  background: var(--primary-dim);
-  text-shadow: var(--glow-primary);
+  background: var(--primary);
+  color: var(--bg-panel);
 }
 
 .help-card .close-btn svg {
@@ -797,93 +944,21 @@ canvas {
   height: 14px;
 }
 
-/* === Scrollbar === */
 .help-card::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 .help-card::-webkit-scrollbar-track {
   background: transparent;
 }
 .help-card::-webkit-scrollbar-thumb {
-  background: var(--primary-dim);
-  border-radius: 0;
-}
-
-/* === Glitch title animation === */
-@keyframes glitch {
-  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
-  5% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 0); }
-  10% { clip-path: inset(50% 0 20% 0); transform: translate(3px, 0); }
-  15% { clip-path: inset(0 0 0 0); transform: translate(0); }
-}
-
-.glitch-title {
-  position: relative;
-}
-
-.glitch-title::after {
-  content: '五子棋';
-  position: absolute;
-  top: 0;
-  left: 2px;
-  color: var(--secondary);
-  opacity: 0.7;
-  animation: glitch 4s ease-in-out infinite;
-  pointer-events: none;
-}
-
-/* === Corner decorations === */
-.corner-deco {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border: 1px solid var(--primary);
+  background: var(--primary);
+  border-radius: 3px;
   opacity: 0.5;
 }
 
-.corner-deco.tl { top: 4px; left: 4px; border-right: none; border-bottom: none; }
-.corner-deco.tr { top: 4px; right: 4px; border-left: none; border-bottom: none; }
-.corner-deco.bl { bottom: 4px; left: 4px; border-right: none; border-top: none; }
-.corner-deco.br { bottom: 4px; right: 4px; border-left: none; border-top: none; }
-
-/* === Theme Selector === */
-.theme-selector {
-  position: relative;
-}
-
-.theme-selector select {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--primary-dim);
-  clip-path: var(--clip-sm);
-  font-size: 13px;
-  font-family: var(--font-mono);
-  background: var(--primary-dim);
-  color: var(--primary);
-  cursor: pointer;
-  outline: none;
-  transition: all .2s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2300fff0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-}
-
-.theme-selector select option {
-  background: var(--bg-panel);
-  color: var(--primary);
-}
-
-.theme-selector select:focus {
-  border-color: var(--primary);
-  box-shadow: var(--glow-primary);
-}
-
-.theme-selector select:hover {
-  background: var(--primary-dim);
-}
-
-/* === Responsive === */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 768px) {
   body {
     align-items: flex-start;
@@ -892,8 +967,8 @@ canvas {
 
   .container {
     flex-direction: column;
-    gap: 16px;
-    padding: 12px;
+    gap: 20px;
+    padding: 16px;
     align-items: center;
     max-width: 100%;
   }
@@ -901,7 +976,7 @@ canvas {
   .board-area {
     width: 100%;
     max-width: 588px;
-    padding: 14px;
+    padding: 16px;
     flex-shrink: 1;
   }
 
@@ -926,12 +1001,12 @@ canvas {
   }
 
   .side-panel h2 {
-    font-size: 18px;
+    font-size: 20px;
     padding-bottom: 12px;
   }
 
   .btn {
-    padding: 13px 16px;
+    padding: 14px 18px;
     font-size: 12px;
   }
 
@@ -939,9 +1014,9 @@ canvas {
     gap: 10px;
   }
 
-  .difficulty-group select,
+  .control-group select,
   .theme-selector select {
-    padding: 12px 14px;
+    padding: 14px 16px;
     font-size: 13px;
   }
 
@@ -963,15 +1038,15 @@ canvas {
 <body data-theme="cyberpunk">
 
 <div class="container">
-  <div class="board-area cyber-panel">
+  <div class="board-area game-panel">
     <div class="board-wrapper">
       <canvas id="board"></canvas>
     </div>
     <div class="status-bar" id="status">// YOUR TURN — BLACK</div>
   </div>
 
-  <div class="side-panel cyber-panel">
-    <h2 class="glitch-title">五子棋</h2>
+  <div class="side-panel game-panel">
+    <h2>五子棋</h2>
 
     <div class="score-row">
       <div class="score-item">
@@ -990,7 +1065,7 @@ canvas {
       </div>
     </div>
 
-    <div class="difficulty-group">
+    <div class="control-group">
       <label>// DIFFICULTY</label>
       <select id="difficulty">
         <option value="easy">EASY — 简单</option>
@@ -999,7 +1074,7 @@ canvas {
       </select>
     </div>
 
-    <div class="difficulty-group">
+    <div class="control-group">
       <label>// SIDE SELECT</label>
       <button class="btn" id="btnSide">
         <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>
@@ -1019,17 +1094,17 @@ canvas {
     </div>
 
     <div class="theme-selector">
-      <label style="display: block; font-size: 10px; color: var(--text-dim); margin-bottom: 6px; font-weight: 400; text-transform: uppercase; letter-spacing: 2px;">// THEME SELECT</label>
+      <label>// THEME SELECT</label>
       <select id="themeSelect">
         <option value="cyberpunk">CYBERPUNK — 赛博朋克</option>
         <option value="ocean-depths">OCEAN DEPTHS — 深海</option>
         <option value="sunset-boulevard">SUNSET BOULEVARD — 日落大道</option>
-        <option value="forest-canopy">FOREST CANOPY — 森林树冠</option>
-        <option value="modern-minimalist">MODERN MINIMALIST — 现代极简</option>
+        <option value="forest-canopy">FOREST CANOPY — 森林</option>
+        <option value="modern-minimalist">MODERN MINIMALIST — 极简</option>
         <option value="golden-hour">GOLDEN HOUR — 黄金时刻</option>
         <option value="arctic-frost">ARCTIC FROST — 北极霜冻</option>
         <option value="desert-rose">DESERT ROSE — 沙漠玫瑰</option>
-        <option value="tech-innovation">TECH INNOVATION — 科技创新</option>
+        <option value="tech-innovation">TECH INNOVATION — 科技</option>
         <option value="botanical-garden">BOTANICAL GARDEN — 植物园</option>
         <option value="midnight-galaxy">MIDNIGHT GALAXY — 午夜银河</option>
       </select>
@@ -1069,13 +1144,13 @@ canvas {
 
     <h4>[ THEMES ]</h4>
     <ul>
-      <li><strong>赛博朋克：</strong>霓虹风格，默认主题</li>
-      <li><strong>深海/日落/森林：</strong>自然风格主题</li>
-      <li><strong>现代极简/科技创新：</strong>现代风格主题</li>
-      <li><strong>黄金时刻/沙漠玫瑰：</strong>温暖风格主题</li>
-      <li><strong>北极霜冻：</strong>清新明亮风格</li>
-      <li><strong>植物园：</strong>活力自然风格</li>
-      <li><strong>午夜银河：</strong>神秘深邃风格</li>
+      <li><strong>赛博朋克：</strong>霓虹科技风</li>
+      <li><strong>深海/日落/森林：</strong>自然渐变风</li>
+      <li><strong>现代极简/科技：</strong>简洁现代风</li>
+      <li><strong>黄金时刻/沙漠玫瑰：</strong>奢华温暖风</li>
+      <li><strong>北极霜冻：</strong>清新明亮风</li>
+      <li><strong>植物园：</strong>活力自然风</li>
+      <li><strong>午夜银河：</strong>神秘宇宙风</li>
     </ul>
 
     <h4>[ AI LEVEL ]</h4>
@@ -1129,12 +1204,10 @@ const $themeSelect = document.getElementById('themeSelect');
 
 const directions = [[0,1],[1,0],[1,1],[1,-1]];
 
-// Get CSS variable value
 function getCSSVar(name) {
   return getComputedStyle(document.body).getPropertyValue(name).trim();
 }
 
-// Parse hex color to rgb
 function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {
@@ -1144,7 +1217,6 @@ function hexToRgb(hex) {
   } : null;
 }
 
-// Convert hex to rgba string
 function hexToRgba(hex, alpha) {
   const rgb = hexToRgb(hex);
   return rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})` : hex;
@@ -1256,7 +1328,6 @@ function draw() {
 
   const boardBg = getCSSVar('--board-bg');
   const boardGrid = getCSSVar('--board-grid');
-  const boardBorder = getCSSVar('--board-border');
   const starPoint = getCSSVar('--star-point');
   const blackStoneShadow = getCSSVar('--black-stone-shadow');
   const whiteStoneShadow = getCSSVar('--white-stone-shadow');
@@ -1265,28 +1336,26 @@ function draw() {
   const winLineColor = getCSSVar('--win-line');
   const primary = getCSSVar('--primary');
   const accent = getCSSVar('--accent');
+  const currentTheme = document.body.getAttribute('data-theme');
+  const isTechTheme = currentTheme === 'tech-innovation';
 
   // Board background
   ctx.fillStyle = boardBg;
   ctx.fillRect(0, 0, BOARD_PX, BOARD_PX);
 
-  // Subtle circuit-like pattern
-  ctx.strokeStyle = hexToRgba(primary, 0.04);
-  ctx.lineWidth = 0.5;
-  for (let i = 0; i < BOARD_PX; i += 20) {
-    ctx.beginPath();
-    ctx.moveTo(i, 0);
-    ctx.lineTo(i, BOARD_PX);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(0, i);
-    ctx.lineTo(BOARD_PX, i);
-    ctx.stroke();
+  // Theme-specific subtle decorations (not intrusive)
+  if (currentTheme === 'ocean-depths') {
+    // Subtle water gradient
+    const grad = ctx.createRadialGradient(BOARD_PX/2, BOARD_PX/2, 0, BOARD_PX/2, BOARD_PX/2, BOARD_PX);
+    grad.addColorStop(0, hexToRgba(primary, 0.02));
+    grad.addColorStop(1, 'transparent');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, BOARD_PX, BOARD_PX);
   }
 
-  // Grid lines
+  // Grid lines - clean and simple
   ctx.strokeStyle = boardGrid;
-  ctx.lineWidth = 1;
+  ctx.lineWidth = isTechTheme ? 1.5 : 1;
   for (let i = 0; i < SIZE; i++) {
     const pos = PADDING + i * CELL;
     ctx.beginPath();
@@ -1299,34 +1368,18 @@ function draw() {
     ctx.stroke();
   }
 
-  // Border glow lines
-  ctx.strokeStyle = boardBorder;
-  ctx.lineWidth = 1.5;
-  ctx.strokeRect(PADDING - 0.5, PADDING - 0.5, (SIZE - 1) * CELL + 1, (SIZE - 1) * CELL + 1);
-
-  // Star points
+  // Star points - clean dots
   const starPoints = [[3,3],[3,7],[3,11],[7,3],[7,7],[7,11],[11,3],[11,7],[11,11]];
   for (const [r, c] of starPoints) {
     const x = PADDING + c * CELL;
     const y = PADDING + r * CELL;
-
-    // Glow
-    const glow = ctx.createRadialGradient(x, y, 0, x, y, 10);
-    glow.addColorStop(0, hexToRgba(starPoint, 0.3));
-    glow.addColorStop(1, 'transparent');
-    ctx.fillStyle = glow;
-    ctx.beginPath();
-    ctx.arc(x, y, 10, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Core dot
     ctx.fillStyle = starPoint;
     ctx.beginPath();
-    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.arc(x, y, isTechTheme ? 4 : 3, 0, Math.PI * 2);
     ctx.fill();
   }
 
-  // Stones
+  // Stones - clean design
   const drawR = R;
   for (let r = 0; r < SIZE; r++) {
     for (let c = 0; c < SIZE; c++) {
@@ -1338,43 +1391,75 @@ function draw() {
 
       if (board[r][c] === 1) {
         // Black stone
-        ctx.shadowColor = blackStoneShadow;
-        ctx.shadowBlur = 8;
+        if (isTechTheme) {
+          // Tech theme: brighter black stone with blue tint for better visibility
+          ctx.shadowColor = '#58a6ff';
+          ctx.shadowBlur = 8;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 0;
 
-        const g = ctx.createRadialGradient(x, y, 0, x, y, drawR);
-        g.addColorStop(0, '#2a2a3a');
-        g.addColorStop(0.8, '#111118');
-        g.addColorStop(1, '#08080e');
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(x, y, drawR, 0, Math.PI * 2);
-        ctx.fill();
+          const g = ctx.createRadialGradient(x - 4, y - 4, 0, x, y, drawR);
+          g.addColorStop(0, '#4a5568');
+          g.addColorStop(0.5, '#2d3748');
+          g.addColorStop(1, '#1a202c');
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(x, y, drawR, 0, Math.PI * 2);
+          ctx.fill();
 
-        // Ring
-        ctx.shadowBlur = 0;
-        ctx.strokeStyle = blackStoneRing;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.arc(x, y, drawR, 0, Math.PI * 2);
-        ctx.stroke();
+          // Blue glow ring for tech theme
+          ctx.shadowBlur = 0;
+          ctx.strokeStyle = 'rgba(88, 166, 255, 0.6)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(x, y, drawR - 1, 0, Math.PI * 2);
+          ctx.stroke();
+        } else {
+          // Standard black stone
+          ctx.shadowColor = blackStoneShadow;
+          ctx.shadowBlur = 6;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 2;
+
+          const g = ctx.createRadialGradient(x - 3, y - 3, 0, x, y, drawR);
+          g.addColorStop(0, '#3a3a4a');
+          g.addColorStop(0.7, '#1a1a2a');
+          g.addColorStop(1, '#0a0a15');
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(x, y, drawR, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Subtle ring
+          ctx.shadowBlur = 0;
+          ctx.shadowOffsetY = 0;
+          ctx.strokeStyle = blackStoneRing;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(x, y, drawR, 0, Math.PI * 2);
+          ctx.stroke();
+        }
       } else {
         // White stone
         ctx.shadowColor = whiteStoneShadow;
-        ctx.shadowBlur = 10;
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 2;
 
-        const g = ctx.createRadialGradient(x - drawR*0.2, y - drawR*0.2, 0, x, y, drawR);
+        const g = ctx.createRadialGradient(x - 4, y - 4, 0, x, y, drawR);
         g.addColorStop(0, '#ffffff');
-        g.addColorStop(0.5, '#e0e0f0');
-        g.addColorStop(1, '#a0a0c0');
+        g.addColorStop(0.5, '#f0f0f5');
+        g.addColorStop(1, '#d0d0e0');
         ctx.fillStyle = g;
         ctx.beginPath();
         ctx.arc(x, y, drawR, 0, Math.PI * 2);
         ctx.fill();
 
-        // Ring
+        // Subtle ring
         ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
         ctx.strokeStyle = whiteStoneRing;
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(x, y, drawR, 0, Math.PI * 2);
         ctx.stroke();
@@ -1384,30 +1469,19 @@ function draw() {
     }
   }
 
-  // Last placed indicator
+  // Last placed indicator - subtle
   if (lastPlaced && !gameOver) {
     const elapsed = Date.now() - lastPlacedTime;
-    if (elapsed < 4000) {
+    if (elapsed < 3000) {
       const lx = PADDING + lastPlaced.c * CELL;
       const ly = PADDING + lastPlaced.r * CELL;
-      const t = Date.now() / 200;
-      const pulseAlpha = 0.5 + 0.3 * Math.sin(t * Math.PI * 2);
-      const pulseR = drawR + 4 + 3 * Math.sin(t * Math.PI * 2);
+      const t = Date.now() / 300;
+      const pulseAlpha = 0.4 + 0.2 * Math.sin(t * Math.PI * 2);
 
-      // Outer ring
       ctx.strokeStyle = hexToRgba(primary, pulseAlpha);
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(lx, ly, pulseR, 0, Math.PI * 2);
-      ctx.stroke();
-
-      // Crosshair
-      const chSize = 6;
-      ctx.strokeStyle = hexToRgba(primary, pulseAlpha * 0.7);
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(lx - chSize, ly); ctx.lineTo(lx + chSize, ly);
-      ctx.moveTo(lx, ly - chSize); ctx.lineTo(lx, ly + chSize);
+      ctx.arc(lx, ly, drawR + 5, 0, Math.PI * 2);
       ctx.stroke();
     }
   }
@@ -1416,56 +1490,37 @@ function draw() {
   if (winLine) {
     ctx.save();
     ctx.strokeStyle = winLineColor;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 4;
     ctx.lineCap = 'round';
     ctx.shadowColor = winLineColor;
-    ctx.shadowBlur = 15;
+    ctx.shadowBlur = 10;
     ctx.beginPath();
     const first = winLine[0];
     const last = winLine[winLine.length - 1];
     ctx.moveTo(PADDING + first[1] * CELL, PADDING + first[0] * CELL);
     ctx.lineTo(PADDING + last[1] * CELL, PADDING + last[0] * CELL);
     ctx.stroke();
-
-    // Double stroke for extra glow
-    ctx.shadowBlur = 30;
-    ctx.globalAlpha = 0.4;
-    ctx.stroke();
     ctx.restore();
   }
 
-  // Hint
+  // Hint indicator
   if (hintPos && !gameOver && !thinking) {
     const x = PADDING + hintPos.c * CELL;
     const y = PADDING + hintPos.r * CELL;
-    const t = Date.now() / 400;
-    const alpha = 0.4 + 0.3 * Math.sin(t * Math.PI * 2);
-    const rot = t * 0.5;
+    const t = Date.now() / 500;
+    const alpha = 0.3 + 0.2 * Math.sin(t * Math.PI * 2);
 
     ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rot);
     ctx.strokeStyle = hexToRgba(accent, alpha);
-    ctx.lineWidth = 1.5;
-
-    // Rotating square reticle
-    const s = R + 5;
-    ctx.strokeRect(-s, -s, s * 2, s * 2);
-
-    // Corner brackets
-    const bs = R + 2;
-    const bl = 6;
-    ctx.strokeStyle = hexToRgba(accent, alpha + 0.2);
     ctx.lineWidth = 2;
-    // Top-left
-    ctx.beginPath(); ctx.moveTo(-bs, -bs + bl); ctx.lineTo(-bs, -bs); ctx.lineTo(-bs + bl, -bs); ctx.stroke();
-    // Top-right
-    ctx.beginPath(); ctx.moveTo(bs - bl, -bs); ctx.lineTo(bs, -bs); ctx.lineTo(bs, -bs + bl); ctx.stroke();
-    // Bottom-left
-    ctx.beginPath(); ctx.moveTo(-bs, bs - bl); ctx.lineTo(-bs, bs); ctx.lineTo(-bs + bl, bs); ctx.stroke();
-    // Bottom-right
-    ctx.beginPath(); ctx.moveTo(bs - bl, bs); ctx.lineTo(bs, bs); ctx.lineTo(bs, bs - bl); ctx.stroke();
-
+    const size = 8;
+    // Draw corner brackets
+    ctx.beginPath();
+    ctx.moveTo(x - size - 5, y - size); ctx.lineTo(x - 5, y - size); ctx.lineTo(x - 5, y - size - 5);
+    ctx.moveTo(x + size + 5, y - size); ctx.lineTo(x + 5, y - size); ctx.lineTo(x + 5, y - size - 5);
+    ctx.moveTo(x - size - 5, y + size); ctx.lineTo(x - 5, y + size); ctx.lineTo(x - 5, y + size + 5);
+    ctx.moveTo(x + size + 5, y + size); ctx.lineTo(x + 5, y + size); ctx.lineTo(x + 5, y + size + 5);
+    ctx.stroke();
     ctx.restore();
   }
 }
@@ -1540,7 +1595,6 @@ function getNeighborCells(b, radius = 2) {
 
 function evaluateLine(b, r, c, dr, dc, player) {
   let count = 0, openEnds = 0;
-  let blocked = 0;
   for (let sign = -1; sign <= 1; sign += 2) {
     let cnt = 0;
     for (let i = 1; i <= 5; i++) {
@@ -1548,13 +1602,12 @@ function evaluateLine(b, r, c, dr, dc, player) {
       if (inBounds(nr, nc) && b[nr][nc] === player) cnt++;
       else {
         if (inBounds(nr, nc) && b[nr][nc] === 0) openEnds++;
-        else if (!inBounds(nr, nc) || b[nr][nc] !== 0) blocked++;
         break;
       }
     }
     count += cnt;
   }
-  return {count, openEnds, blocked};
+  return {count, openEnds};
 }
 
 function evaluateBoard(b, player) {
@@ -1876,7 +1929,7 @@ document.getElementById('btnSide').addEventListener('click', () => {
 
 let hintAnimId = null;
 function hintAnimLoop() {
-  const lastPlacedActive = lastPlaced && !gameOver && (Date.now() - lastPlacedTime < 4000);
+  const lastPlacedActive = lastPlaced && !gameOver && (Date.now() - lastPlacedTime < 3000);
   if ((hintPos && !gameOver && !thinking) || lastPlacedActive) {
     draw();
   }
