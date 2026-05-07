@@ -4,24 +4,339 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GOMOKU // 五子棋</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=DejaVu+Sans:wght@400;700&family=DejaVu+Serif:wght@400;700&family=FreeSerif:wght@400;700&family=FreeSans:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root {
+/* ===== CYBERPUNK THEME (Default) ===== */
+[data-theme="cyberpunk"] {
   --bg: #0a0a0f;
   --bg-panel: #0d0d14;
-  --cyan: #00fff0;
-  --magenta: #ff00ff;
-  --yellow: #fcee0a;
-  --red: #ff003c;
-  --cyan-dim: #00fff066;
-  --magenta-dim: #ff00ff44;
+  --primary: #00fff0;
+  --secondary: #ff00ff;
+  --accent: #fcee0a;
+  --danger: #ff003c;
+  --primary-dim: #00fff066;
+  --secondary-dim: #ff00ff44;
   --text: #e0e0e0;
   --text-dim: #666680;
   --font-display: 'Orbitron', sans-serif;
   --font-mono: 'Share Tech Mono', monospace;
-  --glow-cyan: 0 0 10px #00fff0, 0 0 30px #00fff044;
-  --glow-magenta: 0 0 10px #ff00ff, 0 0 30px #ff00ff44;
-  --glow-yellow: 0 0 10px #fcee0a, 0 0 30px #fcee0a44;
+  --glow-primary: 0 0 10px #00fff0, 0 0 30px #00fff044;
+  --glow-secondary: 0 0 10px #ff00ff, 0 0 30px #ff00ff44;
+  --glow-accent: 0 0 10px #fcee0a, 0 0 30px #fcee0a44;
+  --board-bg: #08080e;
+  --board-grid: rgba(0, 255, 240, 0.2);
+  --board-border: rgba(0, 255, 240, 0.35);
+  --star-point: #00fff0;
+  --black-stone-shadow: #00fff0;
+  --white-stone-shadow: #ff00ff;
+  --black-stone-ring: rgba(0, 255, 240, 0.6);
+  --white-stone-ring: rgba(255, 0, 255, 0.6);
+  --win-line: #fcee0a;
+  --scanline-color: rgba(0, 255, 240, 0.015);
+  --grid-bg-color: rgba(0, 255, 240, 0.03);
+}
+
+/* ===== OCEAN DEPTHS THEME ===== */
+[data-theme="ocean-depths"] {
+  --bg: #1a2332;
+  --bg-panel: #232d3f;
+  --primary: #2d8b8b;
+  --secondary: #a8dadc;
+  --accent: #f1faee;
+  --danger: #e63946;
+  --primary-dim: #2d8b8b66;
+  --secondary-dim: #a8dadc44;
+  --text: #f1faee;
+  --text-dim: #8b9cb5;
+  --font-display: 'DejaVu Sans', sans-serif;
+  --font-mono: 'DejaVu Sans', sans-serif;
+  --glow-primary: 0 0 10px #2d8b8b, 0 0 30px #2d8b8b44;
+  --glow-secondary: 0 0 10px #a8dadc, 0 0 30px #a8dadc44;
+  --glow-accent: 0 0 10px #f1faee, 0 0 30px #f1faee44;
+  --board-bg: #141b26;
+  --board-grid: rgba(45, 139, 139, 0.3);
+  --board-border: rgba(45, 139, 139, 0.5);
+  --star-point: #2d8b8b;
+  --black-stone-shadow: #2d8b8b;
+  --white-stone-shadow: #a8dadc;
+  --black-stone-ring: rgba(45, 139, 139, 0.6);
+  --white-stone-ring: rgba(168, 218, 220, 0.6);
+  --win-line: #f1faee;
+  --scanline-color: transparent;
+  --grid-bg-color: transparent;
+}
+
+/* ===== SUNSET BOULEVARD THEME ===== */
+[data-theme="sunset-boulevard"] {
+  --bg: #264653;
+  --bg-panel: #2d525f;
+  --primary: #e76f51;
+  --secondary: #f4a261;
+  --accent: #e9c46a;
+  --danger: #e63946;
+  --primary-dim: #e76f5166;
+  --secondary-dim: #f4a26144;
+  --text: #f1faee;
+  --text-dim: #b8c5c9;
+  --font-display: 'DejaVu Serif', serif;
+  --font-mono: 'DejaVu Sans', sans-serif;
+  --glow-primary: 0 0 10px #e76f51, 0 0 30px #e76f5144;
+  --glow-secondary: 0 0 10px #f4a261, 0 0 30px #f4a26144;
+  --glow-accent: 0 0 10px #e9c46a, 0 0 30px #e9c46a44;
+  --board-bg: #1f3a45;
+  --board-grid: rgba(231, 111, 81, 0.3);
+  --board-border: rgba(231, 111, 81, 0.5);
+  --star-point: #e76f51;
+  --black-stone-shadow: #e76f51;
+  --white-stone-shadow: #f4a261;
+  --black-stone-ring: rgba(231, 111, 81, 0.6);
+  --white-stone-ring: rgba(244, 162, 97, 0.6);
+  --win-line: #e9c46a;
+  --scanline-color: transparent;
+  --grid-bg-color: transparent;
+}
+
+/* ===== FOREST CANOPY THEME ===== */
+[data-theme="forest-canopy"] {
+  --bg: #2d4a2b;
+  --bg-panel: #3a5c38;
+  --primary: #7d8471;
+  --secondary: #a4ac86;
+  --accent: #faf9f6;
+  --danger: #c1666b;
+  --primary-dim: #7d847166;
+  --secondary-dim: #a4ac8644;
+  --text: #faf9f6;
+  --text-dim: #b8b5a8;
+  --font-display: 'FreeSerif', serif;
+  --font-mono: 'FreeSans', sans-serif;
+  --glow-primary: 0 0 10px #7d8471, 0 0 30px #7d847144;
+  --glow-secondary: 0 0 10px #a4ac86, 0 0 30px #a4ac8644;
+  --glow-accent: 0 0 10px #faf9f6, 0 0 30px #faf9f644;
+  --board-bg: #243d22;
+  --board-grid: rgba(125, 132, 113, 0.3);
+  --board-border: rgba(125, 132, 113, 0.5);
+  --star-point: #7d8471;
+  --black-stone-shadow: #7d8471;
+  --white-stone-shadow: #a4ac86;
+  --black-stone-ring: rgba(125, 132, 113, 0.6);
+  --white-stone-ring: rgba(164, 172, 134, 0.6);
+  --win-line: #faf9f6;
+  --scanline-color: transparent;
+  --grid-bg-color: transparent;
+}
+
+/* ===== MODERN MINIMALIST THEME ===== */
+[data-theme="modern-minimalist"] {
+  --bg: #36454f;
+  --bg-panel: #4a5a65;
+  --primary: #708090;
+  --secondary: #d3d3d3;
+  --accent: #ffffff;
+  --danger: #ff6b6b;
+  --primary-dim: #70809066;
+  --secondary-dim: #d3d3d344;
+  --text: #ffffff;
+  --text-dim: #a0a8b0;
+  --font-display: 'DejaVu Sans', sans-serif;
+  --font-mono: 'DejaVu Sans', sans-serif;
+  --glow-primary: 0 0 10px #708090, 0 0 30px #70809044;
+  --glow-secondary: 0 0 10px #d3d3d3, 0 0 30px #d3d3d344;
+  --glow-accent: 0 0 10px #ffffff, 0 0 30px #ffffff44;
+  --board-bg: #2c3840;
+  --board-grid: rgba(112, 128, 144, 0.3);
+  --board-border: rgba(112, 128, 144, 0.5);
+  --star-point: #708090;
+  --black-stone-shadow: #708090;
+  --white-stone-shadow: #d3d3d3;
+  --black-stone-ring: rgba(112, 128, 144, 0.6);
+  --white-stone-ring: rgba(211, 211, 211, 0.6);
+  --win-line: #ffffff;
+  --scanline-color: transparent;
+  --grid-bg-color: transparent;
+}
+
+/* ===== GOLDEN HOUR THEME ===== */
+[data-theme="golden-hour"] {
+  --bg: #4a403a;
+  --bg-panel: #5c5048;
+  --primary: #f4a900;
+  --secondary: #c1666b;
+  --accent: #d4b896;
+  --danger: #e63946;
+  --primary-dim: #f4a90066;
+  --secondary-dim: #c1666b44;
+  --text: #f5f0eb;
+  --text-dim: #b8a898;
+  --font-display: 'FreeSans', sans-serif;
+  --font-mono: 'FreeSans', sans-serif;
+  --glow-primary: 0 0 10px #f4a900, 0 0 30px #f4a90044;
+  --glow-secondary: 0 0 10px #c1666b, 0 0 30px #c1666b44;
+  --glow-accent: 0 0 10px #d4b896, 0 0 30px #d4b89644;
+  --board-bg: #3d3530;
+  --board-grid: rgba(244, 169, 0, 0.3);
+  --board-border: rgba(244, 169, 0, 0.5);
+  --star-point: #f4a900;
+  --black-stone-shadow: #f4a900;
+  --white-stone-shadow: #c1666b;
+  --black-stone-ring: rgba(244, 169, 0, 0.6);
+  --white-stone-ring: rgba(193, 102, 107, 0.6);
+  --win-line: #d4b896;
+  --scanline-color: transparent;
+  --grid-bg-color: transparent;
+}
+
+/* ===== ARCTIC FROST THEME ===== */
+[data-theme="arctic-frost"] {
+  --bg: #d4e4f7;
+  --bg-panel: #e8f0f9;
+  --primary: #4a6fa5;
+  --secondary: #c0c0c0;
+  --accent: #2c5282;
+  --danger: #e53e3e;
+  --primary-dim: #4a6fa566;
+  --secondary-dim: #c0c0c044;
+  --text: #2d3748;
+  --text-dim: #718096;
+  --font-display: 'DejaVu Sans', sans-serif;
+  --font-mono: 'DejaVu Sans', sans-serif;
+  --glow-primary: 0 0 10px #4a6fa5, 0 0 30px #4a6fa544;
+  --glow-secondary: 0 0 10px #c0c0c0, 0 0 30px #c0c0c044;
+  --glow-accent: 0 0 10px #2c5282, 0 0 30px #2c528244;
+  --board-bg: #c5d8ed;
+  --board-grid: rgba(74, 111, 165, 0.3);
+  --board-border: rgba(74, 111, 165, 0.5);
+  --star-point: #4a6fa5;
+  --black-stone-shadow: #4a6fa5;
+  --white-stone-shadow: #c0c0c0;
+  --black-stone-ring: rgba(74, 111, 165, 0.6);
+  --white-stone-ring: rgba(192, 192, 192, 0.6);
+  --win-line: #2c5282;
+  --scanline-color: transparent;
+  --grid-bg-color: transparent;
+}
+
+/* ===== DESERT ROSE THEME ===== */
+[data-theme="desert-rose"] {
+  --bg: #5d2e46;
+  --bg-panel: #6d3854;
+  --primary: #d4a5a5;
+  --secondary: #b87d6d;
+  --accent: #e8d5c4;
+  --danger: #c53030;
+  --primary-dim: #d4a5a566;
+  --secondary-dim: #b87d6d44;
+  --text: #f7f0eb;
+  --text-dim: #c4a8a8;
+  --font-display: 'FreeSans', sans-serif;
+  --font-mono: 'FreeSans', sans-serif;
+  --glow-primary: 0 0 10px #d4a5a5, 0 0 30px #d4a5a544;
+  --glow-secondary: 0 0 10px #b87d6d, 0 0 30px #b87d6d44;
+  --glow-accent: 0 0 10px #e8d5c4, 0 0 30px #e8d5c444;
+  --board-bg: #4a2538;
+  --board-grid: rgba(212, 165, 165, 0.3);
+  --board-border: rgba(212, 165, 165, 0.5);
+  --star-point: #d4a5a5;
+  --black-stone-shadow: #d4a5a5;
+  --white-stone-shadow: #b87d6d;
+  --black-stone-ring: rgba(212, 165, 165, 0.6);
+  --white-stone-ring: rgba(184, 125, 109, 0.6);
+  --win-line: #e8d5c4;
+  --scanline-color: transparent;
+  --grid-bg-color: transparent;
+}
+
+/* ===== TECH INNOVATION THEME ===== */
+[data-theme="tech-innovation"] {
+  --bg: #1e1e1e;
+  --bg-panel: #2a2a2a;
+  --primary: #0066ff;
+  --secondary: #00ffff;
+  --accent: #ffffff;
+  --danger: #ff4444;
+  --primary-dim: #0066ff66;
+  --secondary-dim: #00ffff44;
+  --text: #ffffff;
+  --text-dim: #888888;
+  --font-display: 'DejaVu Sans', sans-serif;
+  --font-mono: 'DejaVu Sans', sans-serif;
+  --glow-primary: 0 0 10px #0066ff, 0 0 30px #0066ff44;
+  --glow-secondary: 0 0 10px #00ffff, 0 0 30px #00ffff44;
+  --glow-accent: 0 0 10px #ffffff, 0 0 30px #ffffff44;
+  --board-bg: #181818;
+  --board-grid: rgba(0, 102, 255, 0.3);
+  --board-border: rgba(0, 102, 255, 0.5);
+  --star-point: #0066ff;
+  --black-stone-shadow: #0066ff;
+  --white-stone-shadow: #00ffff;
+  --black-stone-ring: rgba(0, 102, 255, 0.6);
+  --white-stone-ring: rgba(0, 255, 255, 0.6);
+  --win-line: #ffffff;
+  --scanline-color: transparent;
+  --grid-bg-color: transparent;
+}
+
+/* ===== BOTANICAL GARDEN THEME ===== */
+[data-theme="botanical-garden"] {
+  --bg: #4a7c59;
+  --bg-panel: #5a9068;
+  --primary: #f9a620;
+  --secondary: #b7472a;
+  --accent: #f5f3ed;
+  --danger: #e53e3e;
+  --primary-dim: #f9a62066;
+  --secondary-dim: #b7472a44;
+  --text: #f5f3ed;
+  --text-dim: #c9d4cc;
+  --font-display: 'DejaVu Serif', serif;
+  --font-mono: 'DejaVu Sans', sans-serif;
+  --glow-primary: 0 0 10px #f9a620, 0 0 30px #f9a62044;
+  --glow-secondary: 0 0 10px #b7472a, 0 0 30px #b7472a44;
+  --glow-accent: 0 0 10px #f5f3ed, 0 0 30px #f5f3ed44;
+  --board-bg: #3d6648;
+  --board-grid: rgba(249, 166, 32, 0.3);
+  --board-border: rgba(249, 166, 32, 0.5);
+  --star-point: #f9a620;
+  --black-stone-shadow: #f9a620;
+  --white-stone-shadow: #b7472a;
+  --black-stone-ring: rgba(249, 166, 32, 0.6);
+  --white-stone-ring: rgba(183, 71, 42, 0.6);
+  --win-line: #f5f3ed;
+  --scanline-color: transparent;
+  --grid-bg-color: transparent;
+}
+
+/* ===== MIDNIGHT GALAXY THEME ===== */
+[data-theme="midnight-galaxy"] {
+  --bg: #2b1e3e;
+  --bg-panel: #3a2a52;
+  --primary: #4a4e8f;
+  --secondary: #a490c2;
+  --accent: #e6e6fa;
+  --danger: #ff6b6b;
+  --primary-dim: #4a4e8f66;
+  --secondary-dim: #a490c244;
+  --text: #e6e6fa;
+  --text-dim: #9a8bb5;
+  --font-display: 'FreeSans', sans-serif;
+  --font-mono: 'FreeSans', sans-serif;
+  --glow-primary: 0 0 10px #4a4e8f, 0 0 30px #4a4e8f44;
+  --glow-secondary: 0 0 10px #a490c2, 0 0 30px #a490c244;
+  --glow-accent: 0 0 10px #e6e6fa, 0 0 30px #e6e6fa44;
+  --board-bg: #221830;
+  --board-grid: rgba(74, 78, 143, 0.3);
+  --board-border: rgba(74, 78, 143, 0.5);
+  --star-point: #4a4e8f;
+  --black-stone-shadow: #4a4e8f;
+  --white-stone-shadow: #a490c2;
+  --black-stone-ring: rgba(74, 78, 143, 0.6);
+  --white-stone-ring: rgba(164, 144, 194, 0.6);
+  --win-line: #e6e6fa;
+  --scanline-color: transparent;
+  --grid-bg-color: transparent;
+}
+
+:root {
   --clip: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
   --clip-sm: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
 }
@@ -39,9 +354,10 @@ body {
   user-select: none;
   overflow-x: hidden;
   position: relative;
+  transition: background 0.3s ease;
 }
 
-/* === Scanline overlay === */
+/* === Scanline overlay - only for cyberpunk theme === */
 body::before {
   content: '';
   position: fixed;
@@ -50,8 +366,8 @@ body::before {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 255, 240, 0.015) 2px,
-    rgba(0, 255, 240, 0.015) 4px
+    var(--scanline-color) 2px,
+    var(--scanline-color) 4px
   );
   pointer-events: none;
   z-index: 999;
@@ -63,8 +379,8 @@ body::after {
   position: fixed;
   inset: 0;
   background:
-    linear-gradient(rgba(0, 255, 240, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 240, 0.03) 1px, transparent 1px);
+    linear-gradient(var(--grid-bg-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-bg-color) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
   z-index: 0;
@@ -79,9 +395,10 @@ body::after {
 /* === Cyber panel base === */
 .cyber-panel {
   background: var(--bg-panel);
-  border: 1px solid var(--cyan-dim);
+  border: 1px solid var(--primary-dim);
   clip-path: var(--clip);
   position: relative;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .cyber-panel::before {
@@ -89,7 +406,7 @@ body::after {
   position: absolute;
   inset: 0;
   clip-path: var(--clip);
-  background: linear-gradient(135deg, rgba(0,255,240,0.05) 0%, transparent 50%, rgba(255,0,255,0.03) 100%);
+  background: linear-gradient(135deg, var(--primary-dim) 0%, transparent 50%, var(--secondary-dim) 100%);
   pointer-events: none;
 }
 
@@ -115,14 +432,15 @@ body::after {
   position: relative;
   clip-path: var(--clip-sm);
   overflow: hidden;
-  border: 1px solid rgba(0, 255, 240, 0.3);
+  border: 1px solid var(--primary-dim);
+  transition: border-color 0.3s ease;
 }
 
 .board-wrapper::after {
   content: '';
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(255, 0, 255, 0.15);
+  border: 1px solid var(--secondary-dim);
   clip-path: var(--clip-sm);
   pointer-events: none;
 }
@@ -141,17 +459,17 @@ canvas {
   margin-top: 16px;
   font-size: 13px;
   font-weight: 400;
-  color: var(--cyan);
+  color: var(--primary);
   min-height: 22px;
   transition: all .3s;
   letter-spacing: 2px;
   text-transform: uppercase;
-  text-shadow: var(--glow-cyan);
+  text-shadow: var(--glow-primary);
 }
 
 .status-bar.win {
-  color: var(--yellow);
-  text-shadow: var(--glow-yellow);
+  color: var(--accent);
+  text-shadow: var(--glow-accent);
   animation: glitchText 0.3s ease 3;
 }
 
@@ -177,13 +495,14 @@ canvas {
   font-size: 22px;
   font-weight: 900;
   text-align: center;
-  color: var(--cyan);
+  color: var(--primary);
   letter-spacing: 6px;
   padding-bottom: 16px;
   margin-bottom: 4px;
   position: relative;
-  text-shadow: var(--glow-cyan);
+  text-shadow: var(--glow-primary);
   text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
 .side-panel h2::after {
@@ -194,7 +513,7 @@ canvas {
   transform: translateX(-50%);
   width: 80%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--cyan), var(--magenta), transparent);
+  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
 }
 
 /* === Score row === */
@@ -205,8 +524,9 @@ canvas {
   gap: 8px;
   padding: 14px 10px;
   clip-path: var(--clip-sm);
-  background: rgba(0, 255, 240, 0.03);
-  border: 1px solid rgba(0, 255, 240, 0.15);
+  background: var(--primary-dim);
+  border: 1px solid var(--primary-dim);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .score-item {
@@ -218,9 +538,10 @@ canvas {
   font-family: var(--font-display);
   font-size: 28px;
   font-weight: 700;
-  color: var(--cyan);
+  color: var(--primary);
   line-height: 1.2;
-  text-shadow: var(--glow-cyan);
+  text-shadow: var(--glow-primary);
+  transition: color 0.3s ease;
 }
 
 .score-item .label {
@@ -230,12 +551,13 @@ canvas {
   font-weight: 400;
   letter-spacing: 3px;
   text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
 .score-divider {
   width: 1px;
   height: 36px;
-  background: linear-gradient(to bottom, transparent, var(--cyan-dim), transparent);
+  background: linear-gradient(to bottom, transparent, var(--primary-dim), transparent);
 }
 
 /* === Difficulty select === */
@@ -247,17 +569,18 @@ canvas {
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 2px;
+  transition: color 0.3s ease;
 }
 
 .difficulty-group select {
   width: 100%;
   padding: 10px 14px;
-  border: 1px solid rgba(0, 255, 240, 0.25);
+  border: 1px solid var(--primary-dim);
   clip-path: var(--clip-sm);
   font-size: 13px;
   font-family: var(--font-mono);
-  background: rgba(0, 255, 240, 0.05);
-  color: var(--cyan);
+  background: var(--primary-dim);
+  color: var(--primary);
   cursor: pointer;
   outline: none;
   transition: all .2s ease;
@@ -268,24 +591,24 @@ canvas {
 }
 
 .difficulty-group select option {
-  background: #0d0d14;
-  color: var(--cyan);
+  background: var(--bg-panel);
+  color: var(--primary);
 }
 
 .difficulty-group select:focus {
-  border-color: var(--cyan);
-  box-shadow: var(--glow-cyan);
+  border-color: var(--primary);
+  box-shadow: var(--glow-primary);
 }
 
 .difficulty-group select:hover {
-  background: rgba(0, 255, 240, 0.1);
+  background: var(--primary-dim);
 }
 
 /* === Buttons === */
 .btn {
   width: 100%;
   padding: 11px 16px;
-  border: 1px solid rgba(0, 255, 240, 0.3);
+  border: 1px solid var(--primary-dim);
   clip-path: var(--clip-sm);
   background: transparent;
   font-size: 13px;
@@ -310,38 +633,38 @@ canvas {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
   opacity: 0;
   transition: opacity .2s;
 }
 
 .btn:hover {
-  background: rgba(0, 255, 240, 0.08);
-  border-color: var(--cyan);
-  color: var(--cyan);
-  text-shadow: 0 0 8px rgba(0, 255, 240, 0.5);
+  background: var(--primary-dim);
+  border-color: var(--primary);
+  color: var(--primary);
+  text-shadow: 0 0 8px var(--primary-dim);
 }
 
 .btn:hover::before { opacity: 1; }
 
 .btn:active {
-  background: rgba(0, 255, 240, 0.15);
+  background: var(--primary-dim);
   transform: scale(0.98);
 }
 
 .btn.primary {
-  border-color: rgba(255, 0, 255, 0.4);
-  color: var(--magenta);
+  border-color: var(--secondary-dim);
+  color: var(--secondary);
 }
 
 .btn.primary:hover {
-  background: rgba(255, 0, 255, 0.1);
-  border-color: var(--magenta);
-  text-shadow: 0 0 8px rgba(255, 0, 255, 0.5);
+  background: var(--secondary-dim);
+  border-color: var(--secondary);
+  text-shadow: 0 0 8px var(--secondary-dim);
 }
 
 .btn.primary::before {
-  background: linear-gradient(90deg, var(--magenta), var(--cyan));
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
 }
 
 .btn svg {
@@ -375,7 +698,7 @@ canvas {
 /* === Help card === */
 .help-card {
   background: var(--bg-panel);
-  border: 1px solid var(--cyan);
+  border: 1px solid var(--primary);
   clip-path: var(--clip);
   padding: 32px;
   max-width: 480px;
@@ -384,6 +707,7 @@ canvas {
   overflow-y: auto;
   animation: cardSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .help-card::before {
@@ -391,7 +715,7 @@ canvas {
   position: absolute;
   inset: 0;
   clip-path: var(--clip);
-  background: linear-gradient(135deg, rgba(0,255,240,0.08) 0%, transparent 50%, rgba(255,0,255,0.05) 100%);
+  background: linear-gradient(135deg, var(--primary-dim) 0%, transparent 50%, var(--secondary-dim) 100%);
   pointer-events: none;
 }
 
@@ -404,12 +728,13 @@ canvas {
   font-family: var(--font-display);
   font-size: 18px;
   margin-bottom: 20px;
-  color: var(--cyan);
+  color: var(--primary);
   padding-bottom: 14px;
   letter-spacing: 4px;
   position: relative;
-  text-shadow: var(--glow-cyan);
+  text-shadow: var(--glow-primary);
   text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
 .help-card h3::after {
@@ -419,24 +744,26 @@ canvas {
   left: 0;
   width: 60px;
   height: 2px;
-  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
 }
 
 .help-card h4 {
   font-size: 12px;
   margin: 18px 0 10px;
-  color: var(--magenta);
+  color: var(--secondary);
   font-weight: 400;
   letter-spacing: 2px;
   text-transform: uppercase;
-  text-shadow: 0 0 8px rgba(255, 0, 255, 0.3);
+  text-shadow: 0 0 8px var(--secondary-dim);
+  transition: color 0.3s ease;
 }
 
 .help-card p, .help-card li {
   font-size: 13px;
   line-height: 1.8;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text);
   margin-bottom: 4px;
+  opacity: 0.8;
 }
 
 .help-card ul { padding-left: 20px; margin-bottom: 8px; }
@@ -448,21 +775,21 @@ canvas {
   gap: 8px;
   margin: 24px auto 0;
   padding: 10px 32px;
-  border: 1px solid var(--cyan);
+  border: 1px solid var(--primary);
   clip-path: var(--clip-sm);
   background: transparent;
   font-size: 13px;
   cursor: pointer;
   font-family: var(--font-mono);
-  color: var(--cyan);
+  color: var(--primary);
   transition: all .2s ease;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
 
 .help-card .close-btn:hover {
-  background: rgba(0, 255, 240, 0.1);
-  text-shadow: var(--glow-cyan);
+  background: var(--primary-dim);
+  text-shadow: var(--glow-primary);
 }
 
 .help-card .close-btn svg {
@@ -478,7 +805,7 @@ canvas {
   background: transparent;
 }
 .help-card::-webkit-scrollbar-thumb {
-  background: var(--cyan-dim);
+  background: var(--primary-dim);
   border-radius: 0;
 }
 
@@ -499,7 +826,7 @@ canvas {
   position: absolute;
   top: 0;
   left: 2px;
-  color: var(--magenta);
+  color: var(--secondary);
   opacity: 0.7;
   animation: glitch 4s ease-in-out infinite;
   pointer-events: none;
@@ -510,7 +837,7 @@ canvas {
   position: absolute;
   width: 12px;
   height: 12px;
-  border: 1px solid var(--cyan);
+  border: 1px solid var(--primary);
   opacity: 0.5;
 }
 
@@ -518,6 +845,43 @@ canvas {
 .corner-deco.tr { top: 4px; right: 4px; border-left: none; border-bottom: none; }
 .corner-deco.bl { bottom: 4px; left: 4px; border-right: none; border-top: none; }
 .corner-deco.br { bottom: 4px; right: 4px; border-left: none; border-top: none; }
+
+/* === Theme Selector === */
+.theme-selector {
+  position: relative;
+}
+
+.theme-selector select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--primary-dim);
+  clip-path: var(--clip-sm);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  background: var(--primary-dim);
+  color: var(--primary);
+  cursor: pointer;
+  outline: none;
+  transition: all .2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2300fff0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.theme-selector select option {
+  background: var(--bg-panel);
+  color: var(--primary);
+}
+
+.theme-selector select:focus {
+  border-color: var(--primary);
+  box-shadow: var(--glow-primary);
+}
+
+.theme-selector select:hover {
+  background: var(--primary-dim);
+}
 
 /* === Responsive === */
 @media (max-width: 768px) {
@@ -575,7 +939,8 @@ canvas {
     gap: 10px;
   }
 
-  .difficulty-group select {
+  .difficulty-group select,
+  .theme-selector select {
     padding: 12px 14px;
     font-size: 13px;
   }
@@ -595,7 +960,7 @@ canvas {
 }
 </style>
 </head>
-<body>
+<body data-theme="cyberpunk">
 
 <div class="container">
   <div class="board-area cyber-panel">
@@ -653,6 +1018,23 @@ canvas {
       </button>
     </div>
 
+    <div class="theme-selector">
+      <label style="display: block; font-size: 10px; color: var(--text-dim); margin-bottom: 6px; font-weight: 400; text-transform: uppercase; letter-spacing: 2px;">// THEME SELECT</label>
+      <select id="themeSelect">
+        <option value="cyberpunk">CYBERPUNK — 赛博朋克</option>
+        <option value="ocean-depths">OCEAN DEPTHS — 深海</option>
+        <option value="sunset-boulevard">SUNSET BOULEVARD — 日落大道</option>
+        <option value="forest-canopy">FOREST CANOPY — 森林树冠</option>
+        <option value="modern-minimalist">MODERN MINIMALIST — 现代极简</option>
+        <option value="golden-hour">GOLDEN HOUR — 黄金时刻</option>
+        <option value="arctic-frost">ARCTIC FROST — 北极霜冻</option>
+        <option value="desert-rose">DESERT ROSE — 沙漠玫瑰</option>
+        <option value="tech-innovation">TECH INNOVATION — 科技创新</option>
+        <option value="botanical-garden">BOTANICAL GARDEN — 植物园</option>
+        <option value="midnight-galaxy">MIDNIGHT GALAXY — 午夜银河</option>
+      </select>
+    </div>
+
     <button class="btn primary" id="btnNew">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
       <span>NEW GAME</span>
@@ -682,6 +1064,18 @@ canvas {
       <li><strong>悔棋：</strong>撤回你和 AI 各一步棋</li>
       <li><strong>难度切换：</strong>游戏中切换难度会重新开始</li>
       <li><strong>新游戏：</strong>清空棋盘重新对局</li>
+      <li><strong>主题切换：</strong>选择你喜欢的界面主题</li>
+    </ul>
+
+    <h4>[ THEMES ]</h4>
+    <ul>
+      <li><strong>赛博朋克：</strong>霓虹风格，默认主题</li>
+      <li><strong>深海/日落/森林：</strong>自然风格主题</li>
+      <li><strong>现代极简/科技创新：</strong>现代风格主题</li>
+      <li><strong>黄金时刻/沙漠玫瑰：</strong>温暖风格主题</li>
+      <li><strong>北极霜冻：</strong>清新明亮风格</li>
+      <li><strong>植物园：</strong>活力自然风格</li>
+      <li><strong>午夜银河：</strong>神秘深邃风格</li>
     </ul>
 
     <h4>[ AI LEVEL ]</h4>
@@ -731,8 +1125,30 @@ const $winCount = document.getElementById('winCount');
 const $loseCount = document.getElementById('loseCount');
 const $drawCount = document.getElementById('drawCount');
 const $helpOverlay = document.getElementById('helpOverlay');
+const $themeSelect = document.getElementById('themeSelect');
 
 const directions = [[0,1],[1,0],[1,1],[1,-1]];
+
+// Get CSS variable value
+function getCSSVar(name) {
+  return getComputedStyle(document.body).getPropertyValue(name).trim();
+}
+
+// Parse hex color to rgb
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+
+// Convert hex to rgba string
+function hexToRgba(hex, alpha) {
+  const rgb = hexToRgb(hex);
+  return rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})` : hex;
+}
 
 function initBoard() {
   gameGeneration++;
@@ -838,12 +1254,24 @@ function updateScore() {
 function draw() {
   ctx.clearRect(0, 0, BOARD_PX, BOARD_PX);
 
-  // Dark cyber board background
-  ctx.fillStyle = '#08080e';
+  const boardBg = getCSSVar('--board-bg');
+  const boardGrid = getCSSVar('--board-grid');
+  const boardBorder = getCSSVar('--board-border');
+  const starPoint = getCSSVar('--star-point');
+  const blackStoneShadow = getCSSVar('--black-stone-shadow');
+  const whiteStoneShadow = getCSSVar('--white-stone-shadow');
+  const blackStoneRing = getCSSVar('--black-stone-ring');
+  const whiteStoneRing = getCSSVar('--white-stone-ring');
+  const winLineColor = getCSSVar('--win-line');
+  const primary = getCSSVar('--primary');
+  const accent = getCSSVar('--accent');
+
+  // Board background
+  ctx.fillStyle = boardBg;
   ctx.fillRect(0, 0, BOARD_PX, BOARD_PX);
 
   // Subtle circuit-like pattern
-  ctx.strokeStyle = 'rgba(0, 255, 240, 0.04)';
+  ctx.strokeStyle = hexToRgba(primary, 0.04);
   ctx.lineWidth = 0.5;
   for (let i = 0; i < BOARD_PX; i += 20) {
     ctx.beginPath();
@@ -856,8 +1284,8 @@ function draw() {
     ctx.stroke();
   }
 
-  // Grid lines - neon cyan
-  ctx.strokeStyle = 'rgba(0, 255, 240, 0.2)';
+  // Grid lines
+  ctx.strokeStyle = boardGrid;
   ctx.lineWidth = 1;
   for (let i = 0; i < SIZE; i++) {
     const pos = PADDING + i * CELL;
@@ -872,11 +1300,11 @@ function draw() {
   }
 
   // Border glow lines
-  ctx.strokeStyle = 'rgba(0, 255, 240, 0.35)';
+  ctx.strokeStyle = boardBorder;
   ctx.lineWidth = 1.5;
   ctx.strokeRect(PADDING - 0.5, PADDING - 0.5, (SIZE - 1) * CELL + 1, (SIZE - 1) * CELL + 1);
 
-  // Star points - neon dots
+  // Star points
   const starPoints = [[3,3],[3,7],[3,11],[7,3],[7,7],[7,11],[11,3],[11,7],[11,11]];
   for (const [r, c] of starPoints) {
     const x = PADDING + c * CELL;
@@ -884,7 +1312,7 @@ function draw() {
 
     // Glow
     const glow = ctx.createRadialGradient(x, y, 0, x, y, 10);
-    glow.addColorStop(0, 'rgba(0, 255, 240, 0.3)');
+    glow.addColorStop(0, hexToRgba(starPoint, 0.3));
     glow.addColorStop(1, 'transparent');
     ctx.fillStyle = glow;
     ctx.beginPath();
@@ -892,13 +1320,13 @@ function draw() {
     ctx.fill();
 
     // Core dot
-    ctx.fillStyle = '#00fff0';
+    ctx.fillStyle = starPoint;
     ctx.beginPath();
     ctx.arc(x, y, 3, 0, Math.PI * 2);
     ctx.fill();
   }
 
-  // Stones - cyber style
+  // Stones
   const drawR = R;
   for (let r = 0; r < SIZE; r++) {
     for (let c = 0; c < SIZE; c++) {
@@ -909,8 +1337,8 @@ function draw() {
       ctx.save();
 
       if (board[r][c] === 1) {
-        // Black stone - dark with cyan edge glow
-        ctx.shadowColor = '#00fff0';
+        // Black stone
+        ctx.shadowColor = blackStoneShadow;
         ctx.shadowBlur = 8;
 
         const g = ctx.createRadialGradient(x, y, 0, x, y, drawR);
@@ -922,16 +1350,16 @@ function draw() {
         ctx.arc(x, y, drawR, 0, Math.PI * 2);
         ctx.fill();
 
-        // Cyan ring
+        // Ring
         ctx.shadowBlur = 0;
-        ctx.strokeStyle = 'rgba(0, 255, 240, 0.6)';
+        ctx.strokeStyle = blackStoneRing;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.arc(x, y, drawR, 0, Math.PI * 2);
         ctx.stroke();
       } else {
-        // White stone - bright with magenta edge glow
-        ctx.shadowColor = '#ff00ff';
+        // White stone
+        ctx.shadowColor = whiteStoneShadow;
         ctx.shadowBlur = 10;
 
         const g = ctx.createRadialGradient(x - drawR*0.2, y - drawR*0.2, 0, x, y, drawR);
@@ -943,9 +1371,9 @@ function draw() {
         ctx.arc(x, y, drawR, 0, Math.PI * 2);
         ctx.fill();
 
-        // Magenta ring
+        // Ring
         ctx.shadowBlur = 0;
-        ctx.strokeStyle = 'rgba(255, 0, 255, 0.6)';
+        ctx.strokeStyle = whiteStoneRing;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.arc(x, y, drawR, 0, Math.PI * 2);
@@ -956,7 +1384,7 @@ function draw() {
     }
   }
 
-  // Last placed indicator - glitch pulse
+  // Last placed indicator
   if (lastPlaced && !gameOver) {
     const elapsed = Date.now() - lastPlacedTime;
     if (elapsed < 4000) {
@@ -967,7 +1395,7 @@ function draw() {
       const pulseR = drawR + 4 + 3 * Math.sin(t * Math.PI * 2);
 
       // Outer ring
-      ctx.strokeStyle = `rgba(0, 255, 240, ${pulseAlpha})`;
+      ctx.strokeStyle = hexToRgba(primary, pulseAlpha);
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(lx, ly, pulseR, 0, Math.PI * 2);
@@ -975,7 +1403,7 @@ function draw() {
 
       // Crosshair
       const chSize = 6;
-      ctx.strokeStyle = `rgba(0, 255, 240, ${pulseAlpha * 0.7})`;
+      ctx.strokeStyle = hexToRgba(primary, pulseAlpha * 0.7);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(lx - chSize, ly); ctx.lineTo(lx + chSize, ly);
@@ -984,13 +1412,13 @@ function draw() {
     }
   }
 
-  // Win line - neon flash
+  // Win line
   if (winLine) {
     ctx.save();
-    ctx.strokeStyle = '#fcee0a';
+    ctx.strokeStyle = winLineColor;
     ctx.lineWidth = 3;
     ctx.lineCap = 'round';
-    ctx.shadowColor = '#fcee0a';
+    ctx.shadowColor = winLineColor;
     ctx.shadowBlur = 15;
     ctx.beginPath();
     const first = winLine[0];
@@ -1006,7 +1434,7 @@ function draw() {
     ctx.restore();
   }
 
-  // Hint - targeting reticle
+  // Hint
   if (hintPos && !gameOver && !thinking) {
     const x = PADDING + hintPos.c * CELL;
     const y = PADDING + hintPos.r * CELL;
@@ -1017,7 +1445,7 @@ function draw() {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rot);
-    ctx.strokeStyle = `rgba(252, 238, 10, ${alpha})`;
+    ctx.strokeStyle = hexToRgba(accent, alpha);
     ctx.lineWidth = 1.5;
 
     // Rotating square reticle
@@ -1027,7 +1455,7 @@ function draw() {
     // Corner brackets
     const bs = R + 2;
     const bl = 6;
-    ctx.strokeStyle = `rgba(252, 238, 10, ${alpha + 0.2})`;
+    ctx.strokeStyle = hexToRgba(accent, alpha + 0.2);
     ctx.lineWidth = 2;
     // Top-left
     ctx.beginPath(); ctx.moveTo(-bs, -bs + bl); ctx.lineTo(-bs, -bs); ctx.lineTo(-bs + bl, -bs); ctx.stroke();
@@ -1362,6 +1790,22 @@ function undo() {
   $status.textContent = humanPlayer === 1 ? '// YOUR TURN — BLACK' : '// YOUR TURN — WHITE';
   draw();
 }
+
+// Theme switching
+function setTheme(themeName) {
+  document.body.setAttribute('data-theme', themeName);
+  localStorage.setItem('gomoku-theme', themeName);
+  draw();
+}
+
+// Load saved theme
+const savedTheme = localStorage.getItem('gomoku-theme') || 'cyberpunk';
+document.body.setAttribute('data-theme', savedTheme);
+$themeSelect.value = savedTheme;
+
+$themeSelect.addEventListener('change', () => {
+  setTheme($themeSelect.value);
+});
 
 document.getElementById('btnNew').addEventListener('click', newGame);
 
