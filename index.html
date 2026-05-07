@@ -4,9 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GOMOKU // 五子棋</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=DejaVu+Sans:wght@400;700&family=DejaVu+Serif:wght@400;700&family=FreeSerif:wght@400;700&family=FreeSans:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=DejaVu+Sans:wght@400;700&family=DejaVu+Serif:wght@400;700&family=FreeSerif:wght@400;700&family=FreeSans:wght@400;700&family=Cinzel:wght@400;700&family=Playfair+Display:wght@400;700&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;700&family=Crimson+Text:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ===== CYBERPUNK THEME (Default) ===== */
+/* ============================================
+   BASE VARIABLES & RESET
+   ============================================ */
+:root {
+  --clip-cyber: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  --clip-cyber-sm: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  --clip-ocean: polygon(5% 0, 95% 0, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0 95%, 0 5%);
+  --clip-sunset: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+  --clip-forest: polygon(0 10%, 10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%);
+  --clip-minimal: inset(0);
+  --clip-golden: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);
+  --clip-arctic: circle(50% at 50% 50%);
+  --clip-desert: polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%);
+  --clip-tech: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  --clip-botanical: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%);
+  --clip-galaxy: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ============================================
+   CYBERPUNK THEME - Neon Tech
+   ============================================ */
 [data-theme="cyberpunk"] {
   --bg: #0a0a0f;
   --bg-panel: #0d0d14;
@@ -14,15 +36,15 @@
   --secondary: #ff00ff;
   --accent: #fcee0a;
   --danger: #ff003c;
-  --primary-dim: #00fff066;
-  --secondary-dim: #ff00ff44;
+  --primary-dim: rgba(0, 255, 240, 0.4);
+  --secondary-dim: rgba(255, 0, 255, 0.27);
   --text: #e0e0e0;
   --text-dim: #666680;
   --font-display: 'Orbitron', sans-serif;
   --font-mono: 'Share Tech Mono', monospace;
-  --glow-primary: 0 0 10px #00fff0, 0 0 30px #00fff044;
-  --glow-secondary: 0 0 10px #ff00ff, 0 0 30px #ff00ff44;
-  --glow-accent: 0 0 10px #fcee0a, 0 0 30px #fcee0a44;
+  --glow-primary: 0 0 10px #00fff0, 0 0 30px rgba(0, 255, 240, 0.27);
+  --glow-secondary: 0 0 10px #ff00ff, 0 0 30px rgba(255, 0, 255, 0.27);
+  --glow-accent: 0 0 10px #fcee0a, 0 0 30px rgba(252, 238, 10, 0.27);
   --board-bg: #08080e;
   --board-grid: rgba(0, 255, 240, 0.2);
   --board-border: rgba(0, 255, 240, 0.35);
@@ -32,317 +54,399 @@
   --black-stone-ring: rgba(0, 255, 240, 0.6);
   --white-stone-ring: rgba(255, 0, 255, 0.6);
   --win-line: #fcee0a;
-  --scanline-color: rgba(0, 255, 240, 0.015);
-  --grid-bg-color: rgba(0, 255, 240, 0.03);
+  --panel-clip: var(--clip-cyber);
+  --panel-clip-sm: var(--clip-cyber-sm);
+  --scanline-opacity: 1;
+  --grid-opacity: 1;
+  --corner-style: cyber;
+  --btn-style: cyber;
+  --title-decoration: glitch;
+  --panel-texture: circuit;
 }
 
-/* ===== OCEAN DEPTHS THEME ===== */
+/* ============================================
+   OCEAN DEPTHS THEME - Fluid & Deep
+   ============================================ */
 [data-theme="ocean-depths"] {
-  --bg: #1a2332;
-  --bg-panel: #232d3f;
+  --bg: #0f1724;
+  --bg-panel: #1a2332;
   --primary: #2d8b8b;
-  --secondary: #a8dadc;
-  --accent: #f1faee;
+  --secondary: #5fb3b3;
+  --accent: #a8dadc;
   --danger: #e63946;
-  --primary-dim: #2d8b8b66;
-  --secondary-dim: #a8dadc44;
-  --text: #f1faee;
-  --text-dim: #8b9cb5;
-  --font-display: 'DejaVu Sans', sans-serif;
-  --font-mono: 'DejaVu Sans', sans-serif;
-  --glow-primary: 0 0 10px #2d8b8b, 0 0 30px #2d8b8b44;
-  --glow-secondary: 0 0 10px #a8dadc, 0 0 30px #a8dadc44;
-  --glow-accent: 0 0 10px #f1faee, 0 0 30px #f1faee44;
-  --board-bg: #141b26;
-  --board-grid: rgba(45, 139, 139, 0.3);
+  --primary-dim: rgba(45, 139, 139, 0.4);
+  --secondary-dim: rgba(95, 179, 179, 0.27);
+  --text: #e8f4f8;
+  --text-dim: #6b8a9a;
+  --font-display: 'Cinzel', serif;
+  --font-mono: 'Work Sans', sans-serif;
+  --glow-primary: 0 0 15px rgba(45, 139, 139, 0.5);
+  --glow-secondary: 0 0 15px rgba(95, 179, 179, 0.4);
+  --glow-accent: 0 0 20px rgba(168, 218, 220, 0.3);
+  --board-bg: #0d1420;
+  --board-grid: rgba(45, 139, 139, 0.35);
   --board-border: rgba(45, 139, 139, 0.5);
   --star-point: #2d8b8b;
   --black-stone-shadow: #2d8b8b;
-  --white-stone-shadow: #a8dadc;
-  --black-stone-ring: rgba(45, 139, 139, 0.6);
-  --white-stone-ring: rgba(168, 218, 220, 0.6);
-  --win-line: #f1faee;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --white-stone-shadow: #5fb3b3;
+  --black-stone-ring: rgba(45, 139, 139, 0.7);
+  --white-stone-ring: rgba(95, 179, 179, 0.7);
+  --win-line: #a8dadc;
+  --panel-clip: var(--clip-ocean);
+  --panel-clip-sm: var(--clip-ocean);
+  --scanline-opacity: 0;
+  --grid-opacity: 0;
+  --corner-style: wave;
+  --btn-style: ocean;
+  --title-decoration: underline-wave;
+  --panel-texture: bubbles;
 }
 
-/* ===== SUNSET BOULEVARD THEME ===== */
+/* ============================================
+   SUNSET BOULEVARD THEME - Warm & Vibrant
+   ============================================ */
 [data-theme="sunset-boulevard"] {
-  --bg: #264653;
-  --bg-panel: #2d525f;
+  --bg: #1a1a2e;
+  --bg-panel: #252542;
   --primary: #e76f51;
   --secondary: #f4a261;
   --accent: #e9c46a;
   --danger: #e63946;
-  --primary-dim: #e76f5166;
-  --secondary-dim: #f4a26144;
-  --text: #f1faee;
-  --text-dim: #b8c5c9;
-  --font-display: 'DejaVu Serif', serif;
-  --font-mono: 'DejaVu Sans', sans-serif;
-  --glow-primary: 0 0 10px #e76f51, 0 0 30px #e76f5144;
-  --glow-secondary: 0 0 10px #f4a261, 0 0 30px #f4a26144;
-  --glow-accent: 0 0 10px #e9c46a, 0 0 30px #e9c46a44;
-  --board-bg: #1f3a45;
+  --primary-dim: rgba(231, 111, 81, 0.4);
+  --secondary-dim: rgba(244, 162, 97, 0.27);
+  --text: #faf3e0;
+  --text-dim: #a08070;
+  --font-display: 'Playfair Display', serif;
+  --font-mono: 'Crimson Text', serif;
+  --glow-primary: 0 0 15px rgba(231, 111, 81, 0.4);
+  --glow-secondary: 0 0 15px rgba(244, 162, 97, 0.35);
+  --glow-accent: 0 0 20px rgba(233, 196, 106, 0.3);
+  --board-bg: #16162a;
   --board-grid: rgba(231, 111, 81, 0.3);
-  --board-border: rgba(231, 111, 81, 0.5);
+  --board-border: rgba(231, 111, 81, 0.45);
   --star-point: #e76f51;
   --black-stone-shadow: #e76f51;
   --white-stone-shadow: #f4a261;
-  --black-stone-ring: rgba(231, 111, 81, 0.6);
-  --white-stone-ring: rgba(244, 162, 97, 0.6);
+  --black-stone-ring: rgba(231, 111, 81, 0.65);
+  --white-stone-ring: rgba(244, 162, 97, 0.65);
   --win-line: #e9c46a;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --panel-clip: var(--clip-sunset);
+  --panel-clip-sm: var(--clip-sunset);
+  --scanline-opacity: 0;
+  --grid-opacity: 0;
+  --corner-style: sun;
+  --btn-style: sunset;
+  --title-decoration: gradient-text;
+  --panel-texture: gradient-radial;
 }
 
-/* ===== FOREST CANOPY THEME ===== */
+/* ============================================
+   FOREST CANOPY THEME - Organic & Natural
+   ============================================ */
 [data-theme="forest-canopy"] {
-  --bg: #2d4a2b;
-  --bg-panel: #3a5c38;
+  --bg: #1a2f1a;
+  --bg-panel: #2d4a2b;
   --primary: #7d8471;
   --secondary: #a4ac86;
-  --accent: #faf9f6;
+  --accent: #c4d4a8;
   --danger: #c1666b;
-  --primary-dim: #7d847166;
-  --secondary-dim: #a4ac8644;
-  --text: #faf9f6;
-  --text-dim: #b8b5a8;
-  --font-display: 'FreeSerif', serif;
-  --font-mono: 'FreeSans', sans-serif;
-  --glow-primary: 0 0 10px #7d8471, 0 0 30px #7d847144;
-  --glow-secondary: 0 0 10px #a4ac86, 0 0 30px #a4ac8644;
-  --glow-accent: 0 0 10px #faf9f6, 0 0 30px #faf9f644;
-  --board-bg: #243d22;
-  --board-grid: rgba(125, 132, 113, 0.3);
+  --primary-dim: rgba(125, 132, 113, 0.4);
+  --secondary-dim: rgba(164, 172, 134, 0.27);
+  --text: #f0f4e8;
+  --text-dim: #8a9a7a;
+  --font-display: 'Cinzel', serif;
+  --font-mono: 'Crimson Text', serif;
+  --glow-primary: 0 0 12px rgba(125, 132, 113, 0.4);
+  --glow-secondary: 0 0 12px rgba(164, 172, 134, 0.35);
+  --glow-accent: 0 0 15px rgba(196, 212, 168, 0.3);
+  --board-bg: #152515;
+  --board-grid: rgba(125, 132, 113, 0.35);
   --board-border: rgba(125, 132, 113, 0.5);
   --star-point: #7d8471;
   --black-stone-shadow: #7d8471;
   --white-stone-shadow: #a4ac86;
-  --black-stone-ring: rgba(125, 132, 113, 0.6);
-  --white-stone-ring: rgba(164, 172, 134, 0.6);
-  --win-line: #faf9f6;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --black-stone-ring: rgba(125, 132, 113, 0.7);
+  --white-stone-ring: rgba(164, 172, 134, 0.7);
+  --win-line: #c4d4a8;
+  --panel-clip: var(--clip-forest);
+  --panel-clip-sm: var(--clip-forest);
+  --scanline-opacity: 0;
+  --grid-opacity: 0;
+  --corner-style: leaf;
+  --btn-style: forest;
+  --title-decoration: organic;
+  --panel-texture: wood-grain;
 }
 
-/* ===== MODERN MINIMALIST THEME ===== */
+/* ============================================
+   MODERN MINIMALIST THEME - Clean & Refined
+   ============================================ */
 [data-theme="modern-minimalist"] {
-  --bg: #36454f;
-  --bg-panel: #4a5a65;
-  --primary: #708090;
-  --secondary: #d3d3d3;
-  --accent: #ffffff;
-  --danger: #ff6b6b;
-  --primary-dim: #70809066;
-  --secondary-dim: #d3d3d344;
-  --text: #ffffff;
-  --text-dim: #a0a8b0;
-  --font-display: 'DejaVu Sans', sans-serif;
-  --font-mono: 'DejaVu Sans', sans-serif;
-  --glow-primary: 0 0 10px #708090, 0 0 30px #70809044;
-  --glow-secondary: 0 0 10px #d3d3d3, 0 0 30px #d3d3d344;
-  --glow-accent: 0 0 10px #ffffff, 0 0 30px #ffffff44;
-  --board-bg: #2c3840;
-  --board-grid: rgba(112, 128, 144, 0.3);
-  --board-border: rgba(112, 128, 144, 0.5);
-  --star-point: #708090;
-  --black-stone-shadow: #708090;
-  --white-stone-shadow: #d3d3d3;
-  --black-stone-ring: rgba(112, 128, 144, 0.6);
-  --white-stone-ring: rgba(211, 211, 211, 0.6);
-  --win-line: #ffffff;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --bg: #f5f5f5;
+  --bg-panel: #ffffff;
+  --primary: #2d2d2d;
+  --secondary: #666666;
+  --accent: #000000;
+  --danger: #dc2626;
+  --primary-dim: rgba(45, 45, 45, 0.1);
+  --secondary-dim: rgba(102, 102, 102, 0.1);
+  --text: #1a1a1a;
+  --text-dim: #888888;
+  --font-display: 'Space Mono', monospace;
+  --font-mono: 'Work Sans', sans-serif;
+  --glow-primary: none;
+  --glow-secondary: none;
+  --glow-accent: none;
+  --board-bg: #fafafa;
+  --board-grid: rgba(45, 45, 45, 0.15);
+  --board-border: rgba(45, 45, 45, 0.25);
+  --star-point: #2d2d2d;
+  --black-stone-shadow: #2d2d2d;
+  --white-stone-shadow: #666666;
+  --black-stone-ring: rgba(45, 45, 45, 0.5);
+  --white-stone-ring: rgba(102, 102, 102, 0.5);
+  --win-line: #000000;
+  --panel-clip: var(--clip-minimal);
+  --panel-clip-sm: var(--clip-minimal);
+  --scanline-opacity: 0;
+  --grid-opacity: 0;
+  --corner-style: none;
+  --btn-style: minimal;
+  --title-decoration: simple;
+  --panel-texture: none;
 }
 
-/* ===== GOLDEN HOUR THEME ===== */
+/* ============================================
+   GOLDEN HOUR THEME - Warm & Luxurious
+   ============================================ */
 [data-theme="golden-hour"] {
-  --bg: #4a403a;
-  --bg-panel: #5c5048;
-  --primary: #f4a900;
-  --secondary: #c1666b;
-  --accent: #d4b896;
-  --danger: #e63946;
-  --primary-dim: #f4a90066;
-  --secondary-dim: #c1666b44;
-  --text: #f5f0eb;
-  --text-dim: #b8a898;
-  --font-display: 'FreeSans', sans-serif;
-  --font-mono: 'FreeSans', sans-serif;
-  --glow-primary: 0 0 10px #f4a900, 0 0 30px #f4a90044;
-  --glow-secondary: 0 0 10px #c1666b, 0 0 30px #c1666b44;
-  --glow-accent: 0 0 10px #d4b896, 0 0 30px #d4b89644;
-  --board-bg: #3d3530;
-  --board-grid: rgba(244, 169, 0, 0.3);
-  --board-border: rgba(244, 169, 0, 0.5);
-  --star-point: #f4a900;
-  --black-stone-shadow: #f4a900;
-  --white-stone-shadow: #c1666b;
-  --black-stone-ring: rgba(244, 169, 0, 0.6);
-  --white-stone-ring: rgba(193, 102, 107, 0.6);
-  --win-line: #d4b896;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --bg: #2d2420;
+  --bg-panel: #3d3028;
+  --primary: #d4a853;
+  --secondary: #c1785c;
+  --accent: #e8d5b7;
+  --danger: #b85450;
+  --primary-dim: rgba(212, 168, 83, 0.3);
+  --secondary-dim: rgba(193, 120, 92, 0.25);
+  --text: #f5ebe0;
+  --text-dim: #a89080;
+  --font-display: 'Playfair Display', serif;
+  --font-mono: 'Crimson Text', serif;
+  --glow-primary: 0 0 15px rgba(212, 168, 83, 0.35);
+  --glow-secondary: 0 0 12px rgba(193, 120, 92, 0.3);
+  --glow-accent: 0 0 18px rgba(232, 213, 183, 0.25);
+  --board-bg: #262018;
+  --board-grid: rgba(212, 168, 83, 0.25);
+  --board-border: rgba(212, 168, 83, 0.4);
+  --star-point: #d4a853;
+  --black-stone-shadow: #d4a853;
+  --white-stone-shadow: #c1785c;
+  --black-stone-ring: rgba(212, 168, 83, 0.6);
+  --white-stone-ring: rgba(193, 120, 92, 0.6);
+  --win-line: #e8d5b7;
+  --panel-clip: var(--clip-golden);
+  --panel-clip-sm: var(--clip-golden);
+  --scanline-opacity: 0;
+  --grid-opacity: 0;
+  --corner-style: gold;
+  --btn-style: luxury;
+  --title-decoration: elegant;
+  --panel-texture: gold-shimmer;
 }
 
-/* ===== ARCTIC FROST THEME ===== */
+/* ============================================
+   ARCTIC FROST THEME - Cool & Crisp
+   ============================================ */
 [data-theme="arctic-frost"] {
-  --bg: #d4e4f7;
-  --bg-panel: #e8f0f9;
-  --primary: #4a6fa5;
-  --secondary: #c0c0c0;
+  --bg: #e8f4f8;
+  --bg-panel: #ffffff;
+  --primary: #4a7c9b;
+  --secondary: #7ba3be;
   --accent: #2c5282;
-  --danger: #e53e3e;
-  --primary-dim: #4a6fa566;
-  --secondary-dim: #c0c0c044;
-  --text: #2d3748;
-  --text-dim: #718096;
-  --font-display: 'DejaVu Sans', sans-serif;
-  --font-mono: 'DejaVu Sans', sans-serif;
-  --glow-primary: 0 0 10px #4a6fa5, 0 0 30px #4a6fa544;
-  --glow-secondary: 0 0 10px #c0c0c0, 0 0 30px #c0c0c044;
-  --glow-accent: 0 0 10px #2c5282, 0 0 30px #2c528244;
-  --board-bg: #c5d8ed;
-  --board-grid: rgba(74, 111, 165, 0.3);
-  --board-border: rgba(74, 111, 165, 0.5);
-  --star-point: #4a6fa5;
-  --black-stone-shadow: #4a6fa5;
-  --white-stone-shadow: #c0c0c0;
-  --black-stone-ring: rgba(74, 111, 165, 0.6);
-  --white-stone-ring: rgba(192, 192, 192, 0.6);
+  --danger: #c53030;
+  --primary-dim: rgba(74, 124, 155, 0.15);
+  --secondary-dim: rgba(123, 163, 190, 0.15);
+  --text: #1a365d;
+  --text-dim: #5a7090;
+  --font-display: 'Space Mono', monospace;
+  --font-mono: 'Work Sans', sans-serif;
+  --glow-primary: 0 0 15px rgba(74, 124, 155, 0.25);
+  --glow-secondary: 0 0 12px rgba(123, 163, 190, 0.2);
+  --glow-accent: 0 0 18px rgba(44, 82, 130, 0.2);
+  --board-bg: #f0f7fa;
+  --board-grid: rgba(74, 124, 155, 0.25);
+  --board-border: rgba(74, 124, 155, 0.4);
+  --star-point: #4a7c9b;
+  --black-stone-shadow: #4a7c9b;
+  --white-stone-shadow: #7ba3be;
+  --black-stone-ring: rgba(74, 124, 155, 0.55);
+  --white-stone-ring: rgba(123, 163, 190, 0.55);
   --win-line: #2c5282;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --panel-clip: var(--clip-arctic);
+  --panel-clip-sm: var(--clip-arctic);
+  --scanline-opacity: 0;
+  --grid-opacity: 0;
+  --corner-style: ice;
+  --btn-style: frost;
+  --title-decoration: frosty;
+  --panel-texture: snow;
 }
 
-/* ===== DESERT ROSE THEME ===== */
+/* ============================================
+   DESERT ROSE THEME - Soft & Elegant
+   ============================================ */
 [data-theme="desert-rose"] {
-  --bg: #5d2e46;
-  --bg-panel: #6d3854;
+  --bg: #2d1f24;
+  --bg-panel: #3d282e;
   --primary: #d4a5a5;
-  --secondary: #b87d6d;
+  --secondary: #c49a9a;
   --accent: #e8d5c4;
-  --danger: #c53030;
-  --primary-dim: #d4a5a566;
-  --secondary-dim: #b87d6d44;
-  --text: #f7f0eb;
-  --text-dim: #c4a8a8;
-  --font-display: 'FreeSans', sans-serif;
-  --font-mono: 'FreeSans', sans-serif;
-  --glow-primary: 0 0 10px #d4a5a5, 0 0 30px #d4a5a544;
-  --glow-secondary: 0 0 10px #b87d6d, 0 0 30px #b87d6d44;
-  --glow-accent: 0 0 10px #e8d5c4, 0 0 30px #e8d5c444;
-  --board-bg: #4a2538;
-  --board-grid: rgba(212, 165, 165, 0.3);
-  --board-border: rgba(212, 165, 165, 0.5);
+  --danger: #b85c5c;
+  --primary-dim: rgba(212, 165, 165, 0.3);
+  --secondary-dim: rgba(196, 154, 154, 0.25);
+  --text: #f5e6e0;
+  --text-dim: #a08080;
+  --font-display: 'Playfair Display', serif;
+  --font-mono: 'Crimson Text', serif;
+  --glow-primary: 0 0 12px rgba(212, 165, 165, 0.3);
+  --glow-secondary: 0 0 10px rgba(196, 154, 154, 0.25);
+  --glow-accent: 0 0 15px rgba(232, 213, 196, 0.2);
+  --board-bg: #261a1e;
+  --board-grid: rgba(212, 165, 165, 0.25);
+  --board-border: rgba(212, 165, 165, 0.4);
   --star-point: #d4a5a5;
   --black-stone-shadow: #d4a5a5;
-  --white-stone-shadow: #b87d6d;
+  --white-stone-shadow: #c49a9a;
   --black-stone-ring: rgba(212, 165, 165, 0.6);
-  --white-stone-ring: rgba(184, 125, 109, 0.6);
+  --white-stone-ring: rgba(196, 154, 154, 0.6);
   --win-line: #e8d5c4;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --panel-clip: var(--clip-desert);
+  --panel-clip-sm: var(--clip-desert);
+  --scanline-opacity: 0;
+  --grid-opacity: 0;
+  --corner-style: petal;
+  --btn-style: soft;
+  --title-decoration: romantic;
+  --panel-texture: sand;
 }
 
-/* ===== TECH INNOVATION THEME ===== */
+/* ============================================
+   TECH INNOVATION THEME - Bold & Modern
+   ============================================ */
 [data-theme="tech-innovation"] {
-  --bg: #1e1e1e;
-  --bg-panel: #2a2a2a;
-  --primary: #0066ff;
-  --secondary: #00ffff;
+  --bg: #0d1117;
+  --bg-panel: #161b22;
+  --primary: #58a6ff;
+  --secondary: #79c0ff;
   --accent: #ffffff;
-  --danger: #ff4444;
-  --primary-dim: #0066ff66;
-  --secondary-dim: #00ffff44;
-  --text: #ffffff;
-  --text-dim: #888888;
-  --font-display: 'DejaVu Sans', sans-serif;
-  --font-mono: 'DejaVu Sans', sans-serif;
-  --glow-primary: 0 0 10px #0066ff, 0 0 30px #0066ff44;
-  --glow-secondary: 0 0 10px #00ffff, 0 0 30px #00ffff44;
-  --glow-accent: 0 0 10px #ffffff, 0 0 30px #ffffff44;
-  --board-bg: #181818;
-  --board-grid: rgba(0, 102, 255, 0.3);
-  --board-border: rgba(0, 102, 255, 0.5);
-  --star-point: #0066ff;
-  --black-stone-shadow: #0066ff;
-  --white-stone-shadow: #00ffff;
-  --black-stone-ring: rgba(0, 102, 255, 0.6);
-  --white-stone-ring: rgba(0, 255, 255, 0.6);
+  --danger: #f85149;
+  --primary-dim: rgba(88, 166, 255, 0.2);
+  --secondary-dim: rgba(121, 192, 255, 0.15);
+  --text: #c9d1d9;
+  --text-dim: #8b949e;
+  --font-display: 'Space Mono', monospace;
+  --font-mono: 'Space Mono', monospace;
+  --glow-primary: 0 0 10px rgba(88, 166, 255, 0.4);
+  --glow-secondary: 0 0 8px rgba(121, 192, 255, 0.35);
+  --glow-accent: 0 0 12px rgba(255, 255, 255, 0.3);
+  --board-bg: #0d1117;
+  --board-grid: rgba(88, 166, 255, 0.25);
+  --board-border: rgba(88, 166, 255, 0.4);
+  --star-point: #58a6ff;
+  --black-stone-shadow: #58a6ff;
+  --white-stone-shadow: #79c0ff;
+  --black-stone-ring: rgba(88, 166, 255, 0.6);
+  --white-stone-ring: rgba(121, 192, 255, 0.6);
   --win-line: #ffffff;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --panel-clip: var(--clip-tech);
+  --panel-clip-sm: var(--clip-tech);
+  --scanline-opacity: 0;
+  --grid-opacity: 0;
+  --corner-style: tech;
+  --btn-style: tech;
+  --title-decoration: code;
+  --panel-texture: grid;
 }
 
-/* ===== BOTANICAL GARDEN THEME ===== */
+/* ============================================
+   BOTANICAL GARDEN THEME - Fresh & Organic
+   ============================================ */
 [data-theme="botanical-garden"] {
-  --bg: #4a7c59;
-  --bg-panel: #5a9068;
-  --primary: #f9a620;
-  --secondary: #b7472a;
-  --accent: #f5f3ed;
-  --danger: #e53e3e;
-  --primary-dim: #f9a62066;
-  --secondary-dim: #b7472a44;
-  --text: #f5f3ed;
-  --text-dim: #c9d4cc;
-  --font-display: 'DejaVu Serif', serif;
-  --font-mono: 'DejaVu Sans', sans-serif;
-  --glow-primary: 0 0 10px #f9a620, 0 0 30px #f9a62044;
-  --glow-secondary: 0 0 10px #b7472a, 0 0 30px #b7472a44;
-  --glow-accent: 0 0 10px #f5f3ed, 0 0 30px #f5f3ed44;
-  --board-bg: #3d6648;
-  --board-grid: rgba(249, 166, 32, 0.3);
-  --board-border: rgba(249, 166, 32, 0.5);
-  --star-point: #f9a620;
-  --black-stone-shadow: #f9a620;
-  --white-stone-shadow: #b7472a;
-  --black-stone-ring: rgba(249, 166, 32, 0.6);
-  --white-stone-ring: rgba(183, 71, 42, 0.6);
-  --win-line: #f5f3ed;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --bg: #1a3d2e;
+  --bg-panel: #2d5a45;
+  --primary: #f4d03f;
+  --secondary: #82e0aa;
+  --accent: #ffffff;
+  --danger: #e74c3c;
+  --primary-dim: rgba(244, 208, 63, 0.25);
+  --secondary-dim: rgba(130, 224, 170, 0.2);
+  --text: #f0f7f4;
+  --text-dim: #8fbc8f;
+  --font-display: 'Cinzel', serif;
+  --font-mono: 'Work Sans', sans-serif;
+  --glow-primary: 0 0 12px rgba(244, 208, 63, 0.35);
+  --glow-secondary: 0 0 10px rgba(130, 224, 170, 0.3);
+  --glow-accent: 0 0 15px rgba(255, 255, 255, 0.25);
+  --board-bg: #153628;
+  --board-grid: rgba(244, 208, 63, 0.25);
+  --board-border: rgba(244, 208, 63, 0.4);
+  --star-point: #f4d03f;
+  --black-stone-shadow: #f4d03f;
+  --white-stone-shadow: #82e0aa;
+  --black-stone-ring: rgba(244, 208, 63, 0.6);
+  --white-stone-ring: rgba(130, 224, 170, 0.6);
+  --win-line: #ffffff;
+  --panel-clip: var(--clip-botanical);
+  --panel-clip-sm: var(--clip-botanical);
+  --scanline-opacity: 0;
+  --grid-opacity: 0;
+  --corner-style: flower;
+  --btn-style: organic;
+  --title-decoration: floral;
+  --panel-texture: leaves;
 }
 
-/* ===== MIDNIGHT GALAXY THEME ===== */
+/* ============================================
+   MIDNIGHT GALAXY THEME - Cosmic & Mystical
+   ============================================ */
 [data-theme="midnight-galaxy"] {
-  --bg: #2b1e3e;
-  --bg-panel: #3a2a52;
-  --primary: #4a4e8f;
-  --secondary: #a490c2;
+  --bg: #0f0c29;
+  --bg-panel: #1a1638;
+  --primary: #9d8ec4;
+  --secondary: #b8a9e0;
   --accent: #e6e6fa;
   --danger: #ff6b6b;
-  --primary-dim: #4a4e8f66;
-  --secondary-dim: #a490c244;
-  --text: #e6e6fa;
-  --text-dim: #9a8bb5;
-  --font-display: 'FreeSans', sans-serif;
-  --font-mono: 'FreeSans', sans-serif;
-  --glow-primary: 0 0 10px #4a4e8f, 0 0 30px #4a4e8f44;
-  --glow-secondary: 0 0 10px #a490c2, 0 0 30px #a490c244;
-  --glow-accent: 0 0 10px #e6e6fa, 0 0 30px #e6e6fa44;
-  --board-bg: #221830;
-  --board-grid: rgba(74, 78, 143, 0.3);
-  --board-border: rgba(74, 78, 143, 0.5);
-  --star-point: #4a4e8f;
-  --black-stone-shadow: #4a4e8f;
-  --white-stone-shadow: #a490c2;
-  --black-stone-ring: rgba(74, 78, 143, 0.6);
-  --white-stone-ring: rgba(164, 144, 194, 0.6);
+  --primary-dim: rgba(157, 142, 196, 0.3);
+  --secondary-dim: rgba(184, 169, 224, 0.25);
+  --text: #e8e6f0;
+  --text-dim: #8a80a0;
+  --font-display: 'Cinzel', serif;
+  --font-mono: 'Space Mono', monospace;
+  --glow-primary: 0 0 15px rgba(157, 142, 196, 0.4);
+  --glow-secondary: 0 0 12px rgba(184, 169, 224, 0.35);
+  --glow-accent: 0 0 20px rgba(230, 230, 250, 0.3);
+  --board-bg: #0c0920;
+  --board-grid: rgba(157, 142, 196, 0.25);
+  --board-border: rgba(157, 142, 196, 0.4);
+  --star-point: #9d8ec4;
+  --black-stone-shadow: #9d8ec4;
+  --white-stone-shadow: #b8a9e0;
+  --black-stone-ring: rgba(157, 142, 196, 0.6);
+  --white-stone-ring: rgba(184, 169, 224, 0.6);
   --win-line: #e6e6fa;
-  --scanline-color: transparent;
-  --grid-bg-color: transparent;
+  --panel-clip: var(--clip-galaxy);
+  --panel-clip-sm: var(--clip-galaxy);
+  --scanline-opacity: 0;
+  --grid-opacity: 0;
+  --corner-style: star;
+  --btn-style: cosmic;
+  --title-decoration: nebula;
+  --panel-texture: stars;
 }
 
-:root {
-  --clip: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
-  --clip-sm: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
+/* ============================================
+   BASE STYLES
+   ============================================ */
 body {
   font-family: var(--font-mono);
   background: var(--bg);
@@ -354,10 +458,10 @@ body {
   user-select: none;
   overflow-x: hidden;
   position: relative;
-  transition: background 0.3s ease;
+  transition: background 0.5s ease, color 0.3s ease;
 }
 
-/* === Scanline overlay - only for cyberpunk theme === */
+/* Scanline overlay - cyberpunk only */
 body::before {
   content: '';
   position: fixed;
@@ -366,25 +470,29 @@ body::before {
     0deg,
     transparent,
     transparent 2px,
-    var(--scanline-color) 2px,
-    var(--scanline-color) 4px
+    rgba(0, 255, 240, 0.015) 2px,
+    rgba(0, 255, 240, 0.015) 4px
   );
   pointer-events: none;
   z-index: 999;
+  opacity: var(--scanline-opacity);
+  transition: opacity 0.5s ease;
 }
 
-/* === Grid background === */
+/* Grid background - cyberpunk only */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
   background:
-    linear-gradient(var(--grid-bg-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-bg-color) 1px, transparent 1px);
+    linear-gradient(rgba(0, 255, 240, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 240, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
   z-index: 0;
+  opacity: var(--grid-opacity);
   animation: gridScroll 20s linear infinite;
+  transition: opacity 0.5s ease;
 }
 
 @keyframes gridScroll {
@@ -392,25 +500,108 @@ body::after {
   100% { transform: perspective(500px) rotateX(0deg) translateY(40px); }
 }
 
-/* === Cyber panel base === */
-.cyber-panel {
-  background: var(--bg-panel);
-  border: 1px solid var(--primary-dim);
-  clip-path: var(--clip);
-  position: relative;
-  transition: background 0.3s ease, border-color 0.3s ease;
+/* ============================================
+   THEME-SPECIFIC BACKGROUND EFFECTS
+   ============================================ */
+
+/* Ocean bubbles */
+[data-theme="ocean-depths"]::after {
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(45, 139, 139, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(95, 179, 179, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(168, 218, 220, 0.05) 0%, transparent 30%);
+  animation: bubbleFloat 15s ease-in-out infinite;
+  opacity: 1;
 }
 
-.cyber-panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  clip-path: var(--clip);
-  background: linear-gradient(135deg, var(--primary-dim) 0%, transparent 50%, var(--secondary-dim) 100%);
-  pointer-events: none;
+@keyframes bubbleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
 }
 
-/* === Container === */
+/* Sunset gradient */
+[data-theme="sunset-boulevard"]::after {
+  background: 
+    radial-gradient(ellipse at top, rgba(231, 111, 81, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom, rgba(233, 196, 106, 0.1) 0%, transparent 50%);
+  opacity: 1;
+}
+
+/* Forest organic */
+[data-theme="forest-canopy"]::after {
+  background: 
+    radial-gradient(circle at 10% 90%, rgba(125, 132, 113, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(164, 172, 134, 0.1) 0%, transparent 40%);
+  opacity: 1;
+}
+
+/* Golden shimmer */
+[data-theme="golden-hour"]::after {
+  background: 
+    linear-gradient(135deg, transparent 0%, rgba(212, 168, 83, 0.05) 50%, transparent 100%);
+  animation: shimmer 8s ease-in-out infinite;
+  opacity: 1;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+/* Arctic snow */
+[data-theme="arctic-frost"]::after {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  opacity: 0.5;
+}
+
+/* Desert sand */
+[data-theme="desert-rose"]::after {
+  background: 
+    radial-gradient(ellipse at 30% 70%, rgba(212, 165, 165, 0.1) 0%, transparent 50%);
+  opacity: 1;
+}
+
+/* Tech grid */
+[data-theme="tech-innovation"]::after {
+  background: 
+    linear-gradient(rgba(88, 166, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88, 166, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 1;
+}
+
+/* Botanical leaves */
+[data-theme="botanical-garden"]::after {
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(130, 224, 170, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(244, 208, 63, 0.08) 0%, transparent 40%);
+  opacity: 1;
+}
+
+/* Galaxy stars */
+[data-theme="midnight-galaxy"]::after {
+  background: 
+    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.3), transparent),
+    radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1px 1px at 230px 80px, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 300px 150px, rgba(255,255,255,0.2), transparent),
+    radial-gradient(2px 2px at 400px 50px, rgba(255,255,255,0.2), transparent);
+  background-size: 450px 200px;
+  animation: twinkle 5s ease-in-out infinite;
+  opacity: 1;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ============================================
+   CONTAINER & LAYOUT
+   ============================================ */
 .container {
   position: relative;
   z-index: 1;
@@ -422,7 +613,43 @@ body::after {
   width: 100%;
 }
 
-/* === Board area === */
+/* ============================================
+   PANEL STYLES - Theme Adaptive
+   ============================================ */
+.game-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--primary-dim);
+  clip-path: var(--panel-clip);
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+.game-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  clip-path: var(--panel-clip);
+  background: linear-gradient(135deg, var(--primary-dim) 0%, transparent 50%, var(--secondary-dim) 100%);
+  pointer-events: none;
+}
+
+/* Minimalist panel - no clip */
+[data-theme="modern-minimalist"] .game-panel,
+[data-theme="arctic-frost"] .game-panel {
+  clip-path: none;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+[data-theme="modern-minimalist"] .game-panel::before,
+[data-theme="arctic-frost"] .game-panel::before {
+  display: none;
+}
+
+/* ============================================
+   BOARD AREA
+   ============================================ */
 .board-area {
   flex-shrink: 0;
   padding: 20px;
@@ -430,10 +657,10 @@ body::after {
 
 .board-wrapper {
   position: relative;
-  clip-path: var(--clip-sm);
+  clip-path: var(--panel-clip-sm);
   overflow: hidden;
   border: 1px solid var(--primary-dim);
-  transition: border-color 0.3s ease;
+  transition: all 0.4s ease;
 }
 
 .board-wrapper::after {
@@ -441,8 +668,20 @@ body::after {
   position: absolute;
   inset: 0;
   border: 1px solid var(--secondary-dim);
-  clip-path: var(--clip-sm);
+  clip-path: var(--panel-clip-sm);
   pointer-events: none;
+}
+
+/* Minimalist board */
+[data-theme="modern-minimalist"] .board-wrapper,
+[data-theme="arctic-frost"] .board-wrapper {
+  clip-path: none;
+  border-radius: 4px;
+}
+
+[data-theme="modern-minimalist"] .board-wrapper::after,
+[data-theme="arctic-frost"] .board-wrapper::after {
+  display: none;
 }
 
 canvas {
@@ -454,6 +693,9 @@ canvas {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* ============================================
+   STATUS BAR
+   ============================================ */
 .status-bar {
   text-align: center;
   margin-top: 16px;
@@ -470,6 +712,9 @@ canvas {
 .status-bar.win {
   color: var(--accent);
   text-shadow: var(--glow-accent);
+}
+
+[data-theme="cyberpunk"] .status-bar.win {
   animation: glitchText 0.3s ease 3;
 }
 
@@ -481,10 +726,12 @@ canvas {
   80% { transform: translate(1px, 1px); filter: hue-rotate(45deg); }
 }
 
-/* === Side panel === */
+/* ============================================
+   SIDE PANEL
+   ============================================ */
 .side-panel {
   padding: 28px 24px;
-  min-width: 240px;
+  min-width: 260px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -493,18 +740,19 @@ canvas {
 .side-panel h2 {
   font-family: var(--font-display);
   font-size: 22px;
-  font-weight: 900;
+  font-weight: 700;
   text-align: center;
   color: var(--primary);
-  letter-spacing: 6px;
+  letter-spacing: 4px;
   padding-bottom: 16px;
   margin-bottom: 4px;
   position: relative;
   text-shadow: var(--glow-primary);
   text-transform: uppercase;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
+/* Title decorations by theme */
 .side-panel h2::after {
   content: '';
   position: absolute;
@@ -516,17 +764,179 @@ canvas {
   background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
 }
 
-/* === Score row === */
+/* Cyberpunk glitch effect */
+[data-theme="cyberpunk"] .glitch-title {
+  position: relative;
+}
+
+[data-theme="cyberpunk"] .glitch-title::after {
+  content: '五子棋';
+  position: absolute;
+  top: 0;
+  left: 2px;
+  color: var(--secondary);
+  opacity: 0.7;
+  animation: glitch 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes glitch {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  5% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 0); }
+  10% { clip-path: inset(50% 0 20% 0); transform: translate(3px, 0); }
+  15% { clip-path: inset(0 0 0 0); transform: translate(0); }
+}
+
+/* Ocean wave underline */
+[data-theme="ocean-depths"] .side-panel h2::after {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), var(--primary), transparent);
+  border-radius: 1px;
+}
+
+/* Sunset gradient text */
+[data-theme="sunset-boulevard"] .side-panel h2 {
+  background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="sunset-boulevard"] .side-panel h2::after {
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+  height: 2px;
+}
+
+/* Forest organic */
+[data-theme="forest-canopy"] .side-panel h2::after {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), var(--primary), transparent);
+  border-radius: 2px;
+}
+
+/* Minimalist simple */
+[data-theme="modern-minimalist"] .side-panel h2 {
+  text-shadow: none;
+  letter-spacing: 6px;
+}
+
+[data-theme="modern-minimalist"] .side-panel h2::after {
+  background: var(--primary);
+  width: 40%;
+  height: 2px;
+}
+
+/* Golden elegant */
+[data-theme="golden-hour"] .side-panel h2 {
+  letter-spacing: 3px;
+}
+
+[data-theme="golden-hour"] .side-panel h2::after {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), var(--primary), transparent);
+}
+
+/* Arctic frosty */
+[data-theme="arctic-frost"] .side-panel h2 {
+  text-shadow: 0 2px 4px rgba(74, 124, 155, 0.2);
+}
+
+[data-theme="arctic-frost"] .side-panel h2::after {
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  height: 2px;
+}
+
+/* Desert romantic */
+[data-theme="desert-rose"] .side-panel h2 {
+  letter-spacing: 3px;
+  font-style: italic;
+}
+
+[data-theme="desert-rose"] .side-panel h2::after {
+  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+  height: 1px;
+}
+
+/* Tech code style */
+[data-theme="tech-innovation"] .side-panel h2 {
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 2px;
+}
+
+[data-theme="tech-innovation"] .side-panel h2::before {
+  content: '< ';
+  color: var(--secondary);
+}
+
+[data-theme="tech-innovation"] .side-panel h2::after {
+  content: ' />';
+  color: var(--secondary);
+  position: static;
+  display: inline;
+  background: none;
+  width: auto;
+  height: auto;
+  transform: none;
+}
+
+[data-theme="tech-innovation"] .side-panel h2::after {
+  display: none;
+}
+
+/* Botanical floral */
+[data-theme="botanical-garden"] .side-panel h2::before,
+[data-theme="botanical-garden"] .side-panel h2::after {
+  content: '❧';
+  position: static;
+  display: inline;
+  background: none;
+  width: auto;
+  height: auto;
+  transform: none;
+  margin: 0 10px;
+  color: var(--secondary);
+}
+
+/* Galaxy nebula */
+[data-theme="midnight-galaxy"] .side-panel h2 {
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--secondary), var(--primary));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: nebula 3s linear infinite;
+}
+
+@keyframes nebula {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+[data-theme="midnight-galaxy"] .side-panel h2::after {
+  background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+  height: 2px;
+}
+
+/* ============================================
+   SCORE ROW
+   ============================================ */
 .score-row {
   display: flex;
   justify-content: space-around;
   align-items: center;
   gap: 8px;
   padding: 14px 10px;
-  clip-path: var(--clip-sm);
+  clip-path: var(--panel-clip-sm);
   background: var(--primary-dim);
   border: 1px solid var(--primary-dim);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+/* Minimalist score row */
+[data-theme="modern-minimalist"] .score-row,
+[data-theme="arctic-frost"] .score-row {
+  clip-path: none;
+  border-radius: 6px;
 }
 
 .score-item {
@@ -541,7 +951,7 @@ canvas {
   color: var(--primary);
   line-height: 1.2;
   text-shadow: var(--glow-primary);
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .score-item .label {
@@ -560,8 +970,14 @@ canvas {
   background: linear-gradient(to bottom, transparent, var(--primary-dim), transparent);
 }
 
-/* === Difficulty select === */
-.difficulty-group label {
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+.control-group {
+  position: relative;
+}
+
+.control-group label {
   display: block;
   font-size: 10px;
   color: var(--text-dim);
@@ -572,11 +988,11 @@ canvas {
   transition: color 0.3s ease;
 }
 
-.difficulty-group select {
+.control-group select {
   width: 100%;
   padding: 10px 14px;
   border: 1px solid var(--primary-dim);
-  clip-path: var(--clip-sm);
+  clip-path: var(--panel-clip-sm);
   font-size: 13px;
   font-family: var(--font-mono);
   background: var(--primary-dim);
@@ -590,26 +1006,35 @@ canvas {
   background-position: right 12px center;
 }
 
-.difficulty-group select option {
+.control-group select option {
   background: var(--bg-panel);
   color: var(--primary);
 }
 
-.difficulty-group select:focus {
+.control-group select:focus {
   border-color: var(--primary);
   box-shadow: var(--glow-primary);
 }
 
-.difficulty-group select:hover {
+.control-group select:hover {
   background: var(--primary-dim);
 }
 
-/* === Buttons === */
+/* Minimalist selects */
+[data-theme="modern-minimalist"] .control-group select,
+[data-theme="arctic-frost"] .control-group select {
+  clip-path: none;
+  border-radius: 4px;
+}
+
+/* ============================================
+   BUTTONS - Theme Adaptive Styles
+   ============================================ */
 .btn {
   width: 100%;
   padding: 11px 16px;
   border: 1px solid var(--primary-dim);
-  clip-path: var(--clip-sm);
+  clip-path: var(--panel-clip-sm);
   background: transparent;
   font-size: 13px;
   font-weight: 400;
@@ -626,7 +1051,8 @@ canvas {
   text-transform: uppercase;
 }
 
-.btn::before {
+/* Cyberpunk button style */
+[data-theme="cyberpunk"] .btn::before {
   content: '';
   position: absolute;
   top: 0;
@@ -638,14 +1064,82 @@ canvas {
   transition: opacity .2s;
 }
 
+[data-theme="cyberpunk"] .btn:hover::before { opacity: 1; }
+
+/* Ocean button */
+[data-theme="ocean-depths"] .btn {
+  border-radius: 4px;
+}
+
+[data-theme="ocean-depths"] .btn:hover {
+  box-shadow: 0 4px 12px rgba(45, 139, 139, 0.3);
+}
+
+/* Sunset button */
+[data-theme="sunset-boulevard"] .btn {
+  border-radius: 20px;
+}
+
+/* Forest button */
+[data-theme="forest-canopy"] .btn {
+  border-radius: 8px;
+}
+
+/* Minimalist button */
+[data-theme="modern-minimalist"] .btn {
+  clip-path: none;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+[data-theme="modern-minimalist"] .btn:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+/* Golden button */
+[data-theme="golden-hour"] .btn {
+  border-width: 1px;
+}
+
+[data-theme="golden-hour"] .btn:hover {
+  box-shadow: 0 0 15px rgba(212, 168, 83, 0.3);
+}
+
+/* Arctic button */
+[data-theme="arctic-frost"] .btn {
+  clip-path: none;
+  border-radius: 20px;
+  border: 1px solid rgba(74, 124, 155, 0.3);
+}
+
+/* Desert button */
+[data-theme="desert-rose"] .btn {
+  border-radius: 4px;
+}
+
+/* Tech button */
+[data-theme="tech-innovation"] .btn {
+  clip-path: var(--clip-tech);
+  font-family: 'Space Mono', monospace;
+}
+
+/* Botanical button */
+[data-theme="botanical-garden"] .btn {
+  border-radius: 20px;
+}
+
+/* Galaxy button */
+[data-theme="midnight-galaxy"] .btn {
+  clip-path: var(--clip-galaxy);
+}
+
+/* Button hover states */
 .btn:hover {
   background: var(--primary-dim);
   border-color: var(--primary);
   color: var(--primary);
   text-shadow: 0 0 8px var(--primary-dim);
 }
-
-.btn:hover::before { opacity: 1; }
 
 .btn:active {
   background: var(--primary-dim);
@@ -663,10 +1157,6 @@ canvas {
   text-shadow: 0 0 8px var(--secondary-dim);
 }
 
-.btn.primary::before {
-  background: linear-gradient(90deg, var(--secondary), var(--primary));
-}
-
 .btn svg {
   width: 16px;
   height: 16px;
@@ -676,7 +1166,50 @@ canvas {
 .btn-row { display: flex; gap: 10px; }
 .btn-row .btn { flex: 1; }
 
-/* === Overlay === */
+/* ============================================
+   THEME SELECTOR
+   ============================================ */
+.theme-selector {
+  position: relative;
+}
+
+.theme-selector select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--primary-dim);
+  clip-path: var(--panel-clip-sm);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  background: var(--primary-dim);
+  color: var(--primary);
+  cursor: pointer;
+  outline: none;
+  transition: all .2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2300fff0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.theme-selector select option {
+  background: var(--bg-panel);
+  color: var(--primary);
+}
+
+.theme-selector select:focus {
+  border-color: var(--primary);
+  box-shadow: var(--glow-primary);
+}
+
+[data-theme="modern-minimalist"] .theme-selector select,
+[data-theme="arctic-frost"] .theme-selector select {
+  clip-path: none;
+  border-radius: 4px;
+}
+
+/* ============================================
+   OVERLAY & HELP CARD
+   ============================================ */
 .overlay {
   display: none;
   position: fixed;
@@ -695,11 +1228,10 @@ canvas {
   to { opacity: 1; }
 }
 
-/* === Help card === */
 .help-card {
   background: var(--bg-panel);
   border: 1px solid var(--primary);
-  clip-path: var(--clip);
+  clip-path: var(--panel-clip);
   padding: 32px;
   max-width: 480px;
   width: 90%;
@@ -707,16 +1239,27 @@ canvas {
   overflow-y: auto;
   animation: cardSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .help-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  clip-path: var(--clip);
+  clip-path: var(--panel-clip);
   background: linear-gradient(135deg, var(--primary-dim) 0%, transparent 50%, var(--secondary-dim) 100%);
   pointer-events: none;
+}
+
+[data-theme="modern-minimalist"] .help-card,
+[data-theme="arctic-frost"] .help-card {
+  clip-path: none;
+  border-radius: 8px;
+}
+
+[data-theme="modern-minimalist"] .help-card::before,
+[data-theme="arctic-frost"] .help-card::before {
+  display: none;
 }
 
 @keyframes cardSlideUp {
@@ -734,7 +1277,7 @@ canvas {
   position: relative;
   text-shadow: var(--glow-primary);
   text-transform: uppercase;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .help-card h3::after {
@@ -763,7 +1306,7 @@ canvas {
   line-height: 1.8;
   color: var(--text);
   margin-bottom: 4px;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .help-card ul { padding-left: 20px; margin-bottom: 8px; }
@@ -776,7 +1319,7 @@ canvas {
   margin: 24px auto 0;
   padding: 10px 32px;
   border: 1px solid var(--primary);
-  clip-path: var(--clip-sm);
+  clip-path: var(--panel-clip-sm);
   background: transparent;
   font-size: 13px;
   cursor: pointer;
@@ -792,12 +1335,17 @@ canvas {
   text-shadow: var(--glow-primary);
 }
 
+[data-theme="modern-minimalist"] .help-card .close-btn,
+[data-theme="arctic-frost"] .help-card .close-btn {
+  clip-path: none;
+  border-radius: 4px;
+}
+
 .help-card .close-btn svg {
   width: 14px;
   height: 14px;
 }
 
-/* === Scrollbar === */
 .help-card::-webkit-scrollbar {
   width: 4px;
 }
@@ -809,81 +1357,9 @@ canvas {
   border-radius: 0;
 }
 
-/* === Glitch title animation === */
-@keyframes glitch {
-  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
-  5% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 0); }
-  10% { clip-path: inset(50% 0 20% 0); transform: translate(3px, 0); }
-  15% { clip-path: inset(0 0 0 0); transform: translate(0); }
-}
-
-.glitch-title {
-  position: relative;
-}
-
-.glitch-title::after {
-  content: '五子棋';
-  position: absolute;
-  top: 0;
-  left: 2px;
-  color: var(--secondary);
-  opacity: 0.7;
-  animation: glitch 4s ease-in-out infinite;
-  pointer-events: none;
-}
-
-/* === Corner decorations === */
-.corner-deco {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border: 1px solid var(--primary);
-  opacity: 0.5;
-}
-
-.corner-deco.tl { top: 4px; left: 4px; border-right: none; border-bottom: none; }
-.corner-deco.tr { top: 4px; right: 4px; border-left: none; border-bottom: none; }
-.corner-deco.bl { bottom: 4px; left: 4px; border-right: none; border-top: none; }
-.corner-deco.br { bottom: 4px; right: 4px; border-left: none; border-top: none; }
-
-/* === Theme Selector === */
-.theme-selector {
-  position: relative;
-}
-
-.theme-selector select {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--primary-dim);
-  clip-path: var(--clip-sm);
-  font-size: 13px;
-  font-family: var(--font-mono);
-  background: var(--primary-dim);
-  color: var(--primary);
-  cursor: pointer;
-  outline: none;
-  transition: all .2s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2300fff0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-}
-
-.theme-selector select option {
-  background: var(--bg-panel);
-  color: var(--primary);
-}
-
-.theme-selector select:focus {
-  border-color: var(--primary);
-  box-shadow: var(--glow-primary);
-}
-
-.theme-selector select:hover {
-  background: var(--primary-dim);
-}
-
-/* === Responsive === */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 768px) {
   body {
     align-items: flex-start;
@@ -939,7 +1415,7 @@ canvas {
     gap: 10px;
   }
 
-  .difficulty-group select,
+  .control-group select,
   .theme-selector select {
     padding: 12px 14px;
     font-size: 13px;
@@ -963,14 +1439,14 @@ canvas {
 <body data-theme="cyberpunk">
 
 <div class="container">
-  <div class="board-area cyber-panel">
+  <div class="board-area game-panel">
     <div class="board-wrapper">
       <canvas id="board"></canvas>
     </div>
     <div class="status-bar" id="status">// YOUR TURN — BLACK</div>
   </div>
 
-  <div class="side-panel cyber-panel">
+  <div class="side-panel game-panel">
     <h2 class="glitch-title">五子棋</h2>
 
     <div class="score-row">
@@ -990,7 +1466,7 @@ canvas {
       </div>
     </div>
 
-    <div class="difficulty-group">
+    <div class="control-group">
       <label>// DIFFICULTY</label>
       <select id="difficulty">
         <option value="easy">EASY — 简单</option>
@@ -999,7 +1475,7 @@ canvas {
       </select>
     </div>
 
-    <div class="difficulty-group">
+    <div class="control-group">
       <label>// SIDE SELECT</label>
       <button class="btn" id="btnSide">
         <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>
@@ -1265,23 +1741,54 @@ function draw() {
   const winLineColor = getCSSVar('--win-line');
   const primary = getCSSVar('--primary');
   const accent = getCSSVar('--accent');
+  const currentTheme = document.body.getAttribute('data-theme');
 
   // Board background
   ctx.fillStyle = boardBg;
   ctx.fillRect(0, 0, BOARD_PX, BOARD_PX);
 
-  // Subtle circuit-like pattern
-  ctx.strokeStyle = hexToRgba(primary, 0.04);
-  ctx.lineWidth = 0.5;
-  for (let i = 0; i < BOARD_PX; i += 20) {
-    ctx.beginPath();
-    ctx.moveTo(i, 0);
-    ctx.lineTo(i, BOARD_PX);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(0, i);
-    ctx.lineTo(BOARD_PX, i);
-    ctx.stroke();
+  // Theme-specific board decorations
+  if (currentTheme === 'cyberpunk') {
+    // Circuit pattern
+    ctx.strokeStyle = hexToRgba(primary, 0.04);
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < BOARD_PX; i += 20) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i, BOARD_PX);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, i);
+      ctx.lineTo(BOARD_PX, i);
+      ctx.stroke();
+    }
+  } else if (currentTheme === 'ocean-depths') {
+    // Water ripple effect
+    ctx.strokeStyle = hexToRgba(primary, 0.05);
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 5; i++) {
+      ctx.beginPath();
+      ctx.arc(BOARD_PX/2, BOARD_PX/2, 50 + i * 80, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  } else if (currentTheme === 'sunset-boulevard') {
+    // Gradient wash
+    const grad = ctx.createRadialGradient(BOARD_PX, 0, 0, BOARD_PX, 0, BOARD_PX);
+    grad.addColorStop(0, hexToRgba('#e76f51', 0.05));
+    grad.addColorStop(0.5, hexToRgba('#f4a261', 0.03));
+    grad.addColorStop(1, 'transparent');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, BOARD_PX, BOARD_PX);
+  } else if (currentTheme === 'midnight-galaxy') {
+    // Stars on board
+    ctx.fillStyle = hexToRgba('#ffffff', 0.3);
+    for (let i = 0; i < 20; i++) {
+      const x = Math.random() * BOARD_PX;
+      const y = Math.random() * BOARD_PX;
+      ctx.beginPath();
+      ctx.arc(x, y, 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 
   // Grid lines
@@ -1299,7 +1806,7 @@ function draw() {
     ctx.stroke();
   }
 
-  // Border glow lines
+  // Border
   ctx.strokeStyle = boardBorder;
   ctx.lineWidth = 1.5;
   ctx.strokeRect(PADDING - 0.5, PADDING - 0.5, (SIZE - 1) * CELL + 1, (SIZE - 1) * CELL + 1);
@@ -1457,13 +1964,9 @@ function draw() {
     const bl = 6;
     ctx.strokeStyle = hexToRgba(accent, alpha + 0.2);
     ctx.lineWidth = 2;
-    // Top-left
     ctx.beginPath(); ctx.moveTo(-bs, -bs + bl); ctx.lineTo(-bs, -bs); ctx.lineTo(-bs + bl, -bs); ctx.stroke();
-    // Top-right
     ctx.beginPath(); ctx.moveTo(bs - bl, -bs); ctx.lineTo(bs, -bs); ctx.lineTo(bs, -bs + bl); ctx.stroke();
-    // Bottom-left
     ctx.beginPath(); ctx.moveTo(-bs, bs - bl); ctx.lineTo(-bs, bs); ctx.lineTo(-bs + bl, bs); ctx.stroke();
-    // Bottom-right
     ctx.beginPath(); ctx.moveTo(bs - bl, bs); ctx.lineTo(bs, bs); ctx.lineTo(bs, bs - bl); ctx.stroke();
 
     ctx.restore();
@@ -1540,7 +2043,6 @@ function getNeighborCells(b, radius = 2) {
 
 function evaluateLine(b, r, c, dr, dc, player) {
   let count = 0, openEnds = 0;
-  let blocked = 0;
   for (let sign = -1; sign <= 1; sign += 2) {
     let cnt = 0;
     for (let i = 1; i <= 5; i++) {
@@ -1548,13 +2050,12 @@ function evaluateLine(b, r, c, dr, dc, player) {
       if (inBounds(nr, nc) && b[nr][nc] === player) cnt++;
       else {
         if (inBounds(nr, nc) && b[nr][nc] === 0) openEnds++;
-        else if (!inBounds(nr, nc) || b[nr][nc] !== 0) blocked++;
         break;
       }
     }
     count += cnt;
   }
-  return {count, openEnds, blocked};
+  return {count, openEnds};
 }
 
 function evaluateBoard(b, player) {
